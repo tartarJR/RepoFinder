@@ -27,24 +27,27 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    // Kotlin
+    /* Kotlin */
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
-    // Androidx
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
     implementation 'androidx.core:core-ktx:1.1.0-alpha05'
+
+    /* Android Support Libraries */
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
 
-    // Testing
+    /* Dependencies for testing */
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0-alpha03'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha03'
 
-    // Apollo
+    /* Apollo to simplify GraphQL operations */
     //noinspection GradleDependency
     implementation 'com.apollographql.apollo:apollo-runtime:0.4.1'
     //noinspection GradleDependency
     implementation "com.apollographql.apollo:apollo-android-support:0.4.1"
+
+    /* Picasso for image loading  */
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }
