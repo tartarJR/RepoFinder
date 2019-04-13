@@ -30,10 +30,10 @@ class RepositoryAdapter(private val repositoryList: List<Repository>, val listen
         fun bind(repository: Repository, listener: (Repository) -> Unit) = with(itemView) {
             repo_name_tv.text = repository.name
             Picasso.get().load(repository.owner.avatarUrl).into(repo_owner_avatar_iv)
-            repo_description_tv.text = repository.name
-            repo_owner_name_tv.text = repository.name
-            repo_fork_count_tv.text = repository.name
-            repo_primary_language_tv.text = repository.name
+            repo_description_tv.text = repository.description
+            repo_owner_name_tv.text = repository.owner.name
+            repo_fork_count_tv.text = repository.forkCount.toString()
+            repo_primary_language_tv.text = repository.primaryLanguage.name
 
             setOnClickListener { listener(repository) }
         }
