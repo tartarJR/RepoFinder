@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">RepoFinder</string>
+    <string name="repo_owner_avatar_iv_description">Avatar of the repository owner</string>
+    <string name="github_fork_icon_iv_description">Github fork icon</string>
 </resources>
