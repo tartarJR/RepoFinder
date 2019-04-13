@@ -1,0 +1,18 @@
+query GetRepositoriesByQualifiersAndKeywords($first: Int, $query: String!, $type: SearchType!) {
+    search(first: $first, query: $query, type: $type) {
+        edges {
+            node {
+                ... on Repository {
+                    name
+                    description
+                    forkCount
+                    owner {
+                        avatarUrl
+                    }
+                }
+            }
+        }
+    }
+}
+
+
