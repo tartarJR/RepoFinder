@@ -1,10 +1,12 @@
-package com.tatar.repofinder
+package com.tatar.repofinder.ui.search
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import com.tatar.repofinder.R
+import com.tatar.repofinder.data.model.Repository
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.repository_list_item.*
 
