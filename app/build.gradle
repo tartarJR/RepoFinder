@@ -60,4 +60,9 @@ dependencies {
 
     /* CircleImageView */
     implementation 'de.hdodenhof:circleimageview:3.0.0'
+
+    /* Logging */
+    implementation group: 'org.jetbrains.anko', name: 'anko-common', version: '0.10.8'
+
+
 }
