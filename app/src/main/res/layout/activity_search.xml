@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?android:selectableItemBackground"
     android:padding="7dp"
-    tools:context=".MainActivity">
+    tools:context=".ui.search.SearchActivity">
 
     <SearchView
         android:id="@+id/repository_search_view"
