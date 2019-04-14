@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">RepoFinder</string>
+
+    <!--MainActivity-->
+    <string name="search_btn_txt">SEARCH</string>
+    <string name="search_result_title_tv_txt">Repositories Found</string>
+    <string name="load_more_btn_txt">LOAD MORE</string>
     <string name="repo_owner_avatar_iv_description">Avatar of the repository owner</string>
     <string name="github_fork_icon_iv_description">Github fork icon</string>
+    <string name="loading_tv_text">Finding repositories</string>
+    <string name="error_txt">Something went wrong!</string>
+    <string name="not_found_txt">No repositories found</string>
 </resources>
