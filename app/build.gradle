@@ -21,6 +21,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+
+        buildTypes.each {
+            it.buildConfigField 'String', 'GITHUB_AUTH_TOKEN', GITHUB_AUTH_TOKEN
+        }
     }
     androidExtensions {
         experimental = true
