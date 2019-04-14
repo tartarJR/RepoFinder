@@ -7,7 +7,11 @@ query GetRepositoriesByQualifiersAndKeywords($first: Int, $query: String!, $type
                     description
                     forkCount
                     owner {
+                        login
                         avatarUrl
+                    }
+                    primaryLanguage {
+                        name
                     }
                 }
             }
