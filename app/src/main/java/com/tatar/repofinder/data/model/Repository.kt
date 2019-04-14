@@ -1,4 +1,4 @@
-package com.tatar.repofinder
+package com.tatar.repofinder.data.model
 
 data class Repository(
     var name: String,
