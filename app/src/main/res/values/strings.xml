@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">RepoFinder</string>
 
-    <!--MainActivity-->
+    <!--SearchActivity-->
     <string name="search_btn_txt">SEARCH</string>
     <string name="search_result_title_tv_txt">Repositories Found</string>
     <string name="load_more_btn_txt">LOAD MORE</string>
@@ -11,4 +11,5 @@
     <string name="status_tv_finding_txt">Searching for Github repositories..</string>
     <string name="status_tv_error_txt">Ups!Something went wrong. Make sure you provide a valid search query or try again later</string>
     <string name="status_tv_not_found_txt">No repositories found</string>
+    <string name="empty_search_query_message">Please provide a search text</string>
 </resources>
