@@ -8,8 +8,15 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.repository_list_item.*
 
-class RepositoryAdapter(private val repositoryList: List<Repository>, val listener: (Repository) -> Unit) :
+class RepositoryAdapter(val listener: (Repository) -> Unit) :
     RecyclerView.Adapter<RepositoryAdapter.RepositoryViewHolder>() {
+
+    private var repositoryList: List<Repository>
+
+    init {
+        repositoryList = ArrayList()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepositoryViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.repository_list_item, parent, false)
         return RepositoryViewHolder(v)
@@ -21,6 +28,11 @@ class RepositoryAdapter(private val repositoryList: List<Repository>, val listen
 
     override fun onBindViewHolder(holder: RepositoryViewHolder, position: Int) {
         holder.bind(repositoryList[position], listener)
+    }
+
+    fun setRepositoryListItems(repositoryList: List<Repository>) {
+        this.repositoryList = repositoryList
+        notifyDataSetChanged()
     }
 
     inner class RepositoryViewHolder(override val containerView: View) :
