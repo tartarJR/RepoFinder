@@ -12,7 +12,7 @@ import okhttp3.OkHttpClient
 import java.io.File
 import java.util.concurrent.TimeUnit
 
-@Module(includes = [AppModule::class])
+@Module
 class NetworkModule {
 
     @Module

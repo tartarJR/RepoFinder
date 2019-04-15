@@ -3,7 +3,6 @@ package com.tatar.repofinder
 import android.app.Application
 import com.tatar.repofinder.di.app.component.AppComponent
 import com.tatar.repofinder.di.app.component.DaggerAppComponent
-import com.tatar.repofinder.di.app.module.AppModule
 
 class App : Application() {
 
@@ -13,7 +12,7 @@ class App : Application() {
         super.onCreate()
 
         instance = this
-        appComponent = DaggerAppComponent.builder().appModule(AppModule(this)).build()
+        appComponent = DaggerAppComponent.builder().applicationContext(this).build()
     }
 
     fun appComponent(): AppComponent {
