@@ -10,9 +10,10 @@ interface SearchContract {
         fun displayErrorMessage()
         fun displayNotFoundMessage()
         fun displayEmptySearchQueryWarning()
+        fun displayNoInternetWarning()
     }
 
     interface SearchPresenter {
-
+        
     }
 }

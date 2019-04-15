@@ -7,21 +7,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tatar.repofinder.R
 import com.tatar.repofinder.data.model.Repository
-import com.tatar.repofinder.data.service.RepositoryService
 import com.tatar.repofinder.ui.search.SearchContract.SearchView
 import kotlinx.android.synthetic.main.activity_search.*
 import org.jetbrains.anko.AnkoLogger
 
 class SearchActivity : AppCompatActivity(), SearchView, AnkoLogger {
 
-    private lateinit var repositoryAdapter: RepositoryAdapter
-    private lateinit var repositoryService: RepositoryService
+    private lateinit var repositoryAdapter: RepositoryAdapter // TODO inject this
+    // TODO inject presenter here
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-
-        repositoryService = RepositoryService(this, this)
 
         repositoryAdapter = RepositoryAdapter {
             Toast.makeText(this, "${it.name} Clicked", Toast.LENGTH_SHORT).show()
@@ -33,12 +30,7 @@ class SearchActivity : AppCompatActivity(), SearchView, AnkoLogger {
         repository_search_btn.setOnClickListener {
             val searchQuery = repository_search_view.query.toString()
 
-            if (searchQuery.isEmpty()) {
-
-            } else {
-                activateProgressBar()
-                repositoryService.getRepositoriesByQualifiersAndKeywords(searchQuery) // TODO move validation to presenter
-            }
+            // TODO call presenter method here
         }
     }
 
@@ -72,6 +64,10 @@ class SearchActivity : AppCompatActivity(), SearchView, AnkoLogger {
 
     override fun displayEmptySearchQueryWarning() {
         Toast.makeText(this, getString(R.string.empty_search_query_message), Toast.LENGTH_SHORT).show()
+    }
+
+    override fun displayNoInternetWarning() {
+        Toast.makeText(this, getString(R.string.no_internet_connection_message), Toast.LENGTH_SHORT).show()
     }
 
     private fun displayMessage(message: String) {
