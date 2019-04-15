@@ -14,6 +14,6 @@ interface SearchContract {
     }
 
     interface SearchPresenter {
-        
+        fun performSearch(searchQuery: String)
     }
 }
