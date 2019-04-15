@@ -189,5 +189,9 @@ crashlytics-build.properties
 fabric.properties
 
 ### AndroidStudio Patch ###
-
 !/gradle/wrapper/gradle-wrapper.jar
+.idea/markdown-navigator.xml
+.idea/markdown-navigator/
+.idea/markdown-exported-files.xml
+.idea/codeStyles/Project.xml
+
