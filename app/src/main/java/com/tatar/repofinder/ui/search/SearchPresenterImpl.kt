@@ -14,14 +14,14 @@ class SearchPresenterImpl(
 ) : SearchPresenter, OnFinishedListener {
 
     override fun performSearch(searchQuery: String) {
-        if (searchQuery.isEmpty()) {
-            searchView.displayEmptySearchQueryWarning()
+        if (!connectionManager.hasInternetConnection()) {
+            searchView.displayNoInternetWarning()
         } else {
-            if (!connectionManager.hasInternetConnection()) {
-                searchView.displayNoInternetWarning()
+            if (searchQuery.isEmpty()) {
+                searchView.displayEmptySearchQueryWarning()
             } else {
                 searchView.activateProgressBar()
-                repositoryService.getRepositoriesByQualifiersAndKeywords(searchQuery)
+                repositoryService.getRepositoriesByQualifiersAndKeywords(searchQuery, this)
             }
         }
     }
