@@ -57,8 +57,8 @@ class NetworkModule {
 
     @PerApp
     @Provides
-    fun NetworkUtil(context: Context): ConnectionManager {
-        return NetworkUtil(context)
+    fun connectionManager(context: Context): ConnectionManager {
+        return ConnectionManager(context)
     }
 }
 
