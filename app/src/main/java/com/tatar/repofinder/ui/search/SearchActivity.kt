@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tatar.repofinder.R
 import com.tatar.repofinder.data.model.Repository
 import com.tatar.repofinder.data.service.RepositoryService
+import com.tatar.repofinder.ui.search.SearchContract.SearchView
 import kotlinx.android.synthetic.main.activity_search.*
 import org.jetbrains.anko.AnkoLogger
 

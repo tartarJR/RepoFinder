@@ -7,7 +7,7 @@ import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.exception.ApolloException
 import com.tatar.repofinder.App
 import com.tatar.repofinder.data.model.Repository
-import com.tatar.repofinder.ui.search.SearchView
+import com.tatar.repofinder.ui.search.SearchContract.SearchView
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.error
 import org.jetbrains.anko.runOnUiThread
