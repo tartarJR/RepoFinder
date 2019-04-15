@@ -12,7 +12,7 @@ class ConnectionManager(val context: Context) {
         var connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         var activeNetworkInfo = connectivityManager.activeNetworkInfo
 
-        if (activeNetworkInfo.isConnected) {
+        if (activeNetworkInfo != null && activeNetworkInfo.isConnected) {
             isConnected = true
         }
 
