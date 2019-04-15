@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'com.apollographql.android'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -29,6 +31,14 @@ android {
     androidExtensions {
         experimental = true
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+kapt {
+    generateStubs = true
 }
 
 dependencies {
@@ -50,23 +60,23 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0-alpha03'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha03'
 
-    /* Apollo to simplify GraphQL operations */
-    //noinspection GradleDependency
-    implementation 'com.apollographql.apollo:apollo-runtime:0.4.1'
-    //noinspection GradleDependency
-    implementation "com.apollographql.apollo:apollo-android-support:0.4.1"
-
-    /* Picasso for image loading  */
-    implementation 'com.squareup.picasso:picasso:2.71828'
-
-    /* Fancy AlertDialog */
-    implementation 'com.github.d-max:spots-dialog:1.1@aar'
-
     /* CircleImageView */
     implementation 'de.hdodenhof:circleimageview:3.0.0'
 
     /* Logging */
-    implementation group: 'org.jetbrains.anko', name: 'anko-common', version: '0.10.8'
+    implementation 'org.jetbrains.anko:anko-common:0.10.8'
+
+    /* Dependency Injection */
+    implementation 'com.google.dagger:dagger:2.22.1'
+    kapt 'com.google.dagger:dagger-compiler:2.22.1'
+
+    /* Networking */
+    implementation 'com.squareup.okhttp3:okhttp:3.14.1'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    //noinspection GradleDependency
+    implementation 'com.apollographql.apollo:apollo-runtime:0.4.1'
+    //noinspection GradleDependency
+    implementation "com.apollographql.apollo:apollo-android-support:0.4.1"
 
 
 }
