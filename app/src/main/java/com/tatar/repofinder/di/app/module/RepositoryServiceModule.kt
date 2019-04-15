@@ -6,16 +6,12 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class RepositoryServiceModule {
+object RepositoryServiceModule {
 
-    @Module
-    companion object {
-
-        @JvmStatic
-        @PerApp
-        @Provides
-        fun repositoryService(): RepositoryService {
-            return RepositoryService()
-        }
+    @JvmStatic
+    @PerApp
+    @Provides
+    fun repositoryService(): RepositoryService {
+        return RepositoryService()
     }
 }

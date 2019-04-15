@@ -9,7 +9,6 @@ import com.tatar.repofinder.App
 import com.tatar.repofinder.R
 import com.tatar.repofinder.data.model.Repository
 import com.tatar.repofinder.di.search.DaggerSearchComponent
-import com.tatar.repofinder.di.search.SearchModule
 import com.tatar.repofinder.ui.search.RepositoryAdapter.ItemClickListener
 import com.tatar.repofinder.ui.search.SearchContract.SearchPresenter
 import com.tatar.repofinder.ui.search.SearchContract.SearchView
@@ -97,9 +96,10 @@ class SearchActivity : AppCompatActivity(), SearchView, ItemClickListener, AnkoL
 
     private fun provideDependencies() {
         val searchComponent = DaggerSearchComponent.builder()
-            .searchModule(SearchModule(this, this, this))
-            .appComponent(App.instance.appComponent())
-            .build()
+            .searchActivity(this)
+            .searchView(this)
+            .itemClickListener(this)
+            .appComponent(App.instance.appComponent()).build()
 
         searchComponent.injectSearchActivity(this)
     }
