@@ -7,18 +7,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tatar.repofinder.R
 import com.tatar.repofinder.data.model.Repository
-import com.tatar.repofinder.ui.search.SearchContract.SearchView
+import com.tatar.repofinder.ui.search.SearchContract.*
 import kotlinx.android.synthetic.main.activity_search.*
 import org.jetbrains.anko.AnkoLogger
 
 class SearchActivity : AppCompatActivity(), SearchView, AnkoLogger {
 
     private lateinit var repositoryAdapter: RepositoryAdapter // TODO inject this
-    // TODO inject presenter here
+    private lateinit var searchPresenter: SearchPresenter // TODO inject this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+        searchPresenter =
 
         repositoryAdapter = RepositoryAdapter {
             Toast.makeText(this, "${it.name} Clicked", Toast.LENGTH_SHORT).show()
@@ -35,12 +37,14 @@ class SearchActivity : AppCompatActivity(), SearchView, AnkoLogger {
     }
 
     override fun displayRepositories(repositoryList: ArrayList<Repository>) {
-        repositoryAdapter.setRepositoryListItems(repositoryList)
-        progress_bar.visibility = View.GONE
-        status_tv.visibility = View.GONE
-        search_result_title_tv.visibility = View.VISIBLE
-        repository_recycler_view.visibility = View.VISIBLE
-        repository_search_btn.isEnabled = true
+        runOnUiThread {
+            repositoryAdapter.setRepositoryListItems(repositoryList)
+            progress_bar.visibility = View.GONE
+            status_tv.visibility = View.GONE
+            search_result_title_tv.visibility = View.VISIBLE
+            repository_recycler_view.visibility = View.VISIBLE
+            repository_search_btn.isEnabled = true
+        }
     }
 
     override fun activateProgressBar() {
@@ -55,11 +59,15 @@ class SearchActivity : AppCompatActivity(), SearchView, AnkoLogger {
     }
 
     override fun displayErrorMessage() {
-        displayMessage(getString(R.string.status_tv_error_txt))
+        runOnUiThread {
+            displayMessage(getString(R.string.status_tv_error_txt))
+        }
     }
 
     override fun displayNotFoundMessage() {
-        displayMessage(getString(R.string.status_tv_not_found_txt))
+        runOnUiThread {
+            displayMessage(getString(R.string.status_tv_not_found_txt))
+        }
     }
 
     override fun displayEmptySearchQueryWarning() {
