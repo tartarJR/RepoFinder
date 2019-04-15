@@ -2,7 +2,6 @@ package com.tatar.repofinder.data.service
 
 import GetRepositoriesByQualifiersAndKeywordsQuery
 import com.apollographql.apollo.ApolloCall
-import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.exception.ApolloException
 import com.tatar.repofinder.App
 import com.tatar.repofinder.data.model.Repository
@@ -10,11 +9,11 @@ import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.error
 import type.SearchType
 
-class RepositoryService(var onFinishedListener: OnFinishedListener) : AnkoLogger {
+class RepositoryService : AnkoLogger {
 
-    private var apolloClient: ApolloClient = App.instance.appComponent().apolloClient()
+    private var apolloClient = App.instance.appComponent().apolloClient()
 
-    fun getRepositoriesByQualifiersAndKeywords(searchParam: String) {
+    fun getRepositoriesByQualifiersAndKeywords(searchParam: String, onFinishedListener: OnFinishedListener) {
 
         val queryCall = GetRepositoriesByQualifiersAndKeywordsQuery
             .builder()
