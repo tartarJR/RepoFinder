@@ -8,9 +8,14 @@ import dagger.Provides
 @Module
 class RepositoryServiceModule {
 
-    @PerApp
-    @Provides
-    fun repositoryService(): RepositoryService {
-        return RepositoryService()
+    @Module
+    companion object {
+
+        @JvmStatic
+        @PerApp
+        @Provides
+        fun repositoryService(): RepositoryService {
+            return RepositoryService()
+        }
     }
 }

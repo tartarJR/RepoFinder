@@ -36,20 +36,25 @@ class SearchModule(
         return itemClickListener
     }
 
-    @PerSearch
-    @Provides
-    fun searchPresenter(
-        searchView: SearchView,
-        repositoryService: RepositoryService,
-        connectionManager: ConnectionManager
-    ): SearchPresenter {
-        return SearchPresenterImpl(searchView, repositoryService, connectionManager)
-    }
+    @Module
+    companion object {
 
-    @PerSearch
-    @Provides
-    fun repositoryAdapter(itemClickListener: ItemClickListener): RepositoryAdapter {
-        return RepositoryAdapter(itemClickListener)
-    }
+        @JvmStatic
+        @PerSearch
+        @Provides
+        fun searchPresenter(
+            searchView: SearchView,
+            repositoryService: RepositoryService,
+            connectionManager: ConnectionManager
+        ): SearchPresenter {
+            return SearchPresenterImpl(searchView, repositoryService, connectionManager)
+        }
 
+        @JvmStatic
+        @PerSearch
+        @Provides
+        fun repositoryAdapter(itemClickListener: ItemClickListener): RepositoryAdapter {
+            return RepositoryAdapter(itemClickListener)
+        }
+    }
 }

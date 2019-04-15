@@ -10,11 +10,16 @@ import dagger.Provides
 @Module(includes = [NetworkModule::class])
 class PicassoModule {
 
-    @PerApp
-    @Provides
-    fun picassoPicasso(context: Context, okHttp3Downloader: OkHttp3Downloader): Picasso {
-        return Picasso.Builder(context)
-            .downloader(okHttp3Downloader)
-            .build()
+    @Module
+    companion object {
+
+        @JvmStatic
+        @PerApp
+        @Provides
+        fun picassoPicasso(context: Context, okHttp3Downloader: OkHttp3Downloader): Picasso {
+            return Picasso.Builder(context)
+                .downloader(okHttp3Downloader)
+                .build()
+        }
     }
 }
