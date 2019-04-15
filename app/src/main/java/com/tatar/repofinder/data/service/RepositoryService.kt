@@ -1,20 +1,16 @@
 package com.tatar.repofinder.data.service
 
 import GetRepositoriesByQualifiersAndKeywordsQuery
-import android.content.Context
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.exception.ApolloException
 import com.tatar.repofinder.App
 import com.tatar.repofinder.data.model.Repository
-import com.tatar.repofinder.ui.search.SearchContract.SearchView
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.error
-import org.jetbrains.anko.runOnUiThread
 import type.SearchType
 
-// TODO experimental class for Apollo and GraphQl, To be refactored
-class RepositoryService(var searchView: SearchView, var context: Context) : AnkoLogger {
+class RepositoryService(var onFinishedListener: OnFinishedListener) : AnkoLogger {
 
     private var apolloClient: ApolloClient = App.instance.appComponent().apolloClient()
 
@@ -30,7 +26,7 @@ class RepositoryService(var searchView: SearchView, var context: Context) : Anko
         apolloClient.query(queryCall)
             .enqueue(object : ApolloCall.Callback<GetRepositoriesByQualifiersAndKeywordsQuery.Data>() {
                 override fun onFailure(e: ApolloException) {
-                    searchView.displayErrorMessage()
+                    onFinishedListener.onError()
                     error(e)
                 }
 
@@ -39,7 +35,7 @@ class RepositoryService(var searchView: SearchView, var context: Context) : Anko
                     val errors = response.errors()
 
                     if (errors.isNotEmpty()) {
-                        searchView.displayErrorMessage()
+                        onFinishedListener.onError()
                         val message = errors[0]?.message() ?: ""
                         error("ERROR: $message")
                     } else {
@@ -63,16 +59,14 @@ class RepositoryService(var searchView: SearchView, var context: Context) : Anko
                             repositories.add(repository)
                         }
 
-                        context.runOnUiThread {
-
-                            if (repositories.isEmpty()) {
-                                searchView.displayNotFoundMessage()
-                            } else {
-                                searchView.displayRepositories(repositories)
-                            }
-                        }
+                        onFinishedListener.onResponse(repositories)
                     }
                 }
             })
+    }
+
+    interface OnFinishedListener {
+        fun onResponse(repositoryList: ArrayList<Repository>)
+        fun onError()
     }
 }
