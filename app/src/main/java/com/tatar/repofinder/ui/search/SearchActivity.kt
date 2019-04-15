@@ -28,15 +28,8 @@ class SearchActivity : AppCompatActivity(), SearchView, ItemClickListener, AnkoL
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        var searchComponent = DaggerSearchComponent.builder()
-            .searchModule(SearchModule(this, this, this))
-            .appComponent(App.instance.appComponent())
-            .build()
-
-        searchComponent.injectSearchActivity(this)
-
-        repository_recycler_view.layoutManager = LinearLayoutManager(this)
-        repository_recycler_view.adapter = repositoryAdapter
+        provideDependencies()
+        setUpRecyclerView()
 
         repository_search_btn.setOnClickListener {
             val searchQuery = repository_search_view.query.toString()
@@ -100,5 +93,19 @@ class SearchActivity : AppCompatActivity(), SearchView, ItemClickListener, AnkoL
         repository_search_view.visibility = View.VISIBLE
         repository_search_btn.visibility = View.VISIBLE
         repository_search_btn.isEnabled = true
+    }
+
+    private fun provideDependencies() {
+        val searchComponent = DaggerSearchComponent.builder()
+            .searchModule(SearchModule(this, this, this))
+            .appComponent(App.instance.appComponent())
+            .build()
+
+        searchComponent.injectSearchActivity(this)
+    }
+
+    private fun setUpRecyclerView() {
+        repository_recycler_view.layoutManager = LinearLayoutManager(this)
+        repository_recycler_view.adapter = repositoryAdapter
     }
 }

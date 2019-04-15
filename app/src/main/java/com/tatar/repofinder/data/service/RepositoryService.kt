@@ -45,14 +45,13 @@ class RepositoryService : AnkoLogger {
                         for (edge in edges!!) {
                             val apolloRepository = edge.node()!!.asRepository()
 
-                            // TODO better way to  do this, ?,!! check
                             val repository = Repository(
                                 apolloRepository!!.name(),
-                                apolloRepository.description(), // TODO fix this
+                                (if (apolloRepository.description() == null) "--" else apolloRepository.description())!!,
                                 apolloRepository.forkCount(),
                                 apolloRepository.owner().login(),
                                 apolloRepository.owner().avatarUrl().toString(),
-                                apolloRepository.primaryLanguage()?.name()
+                                if (apolloRepository.primaryLanguage() == null) "--" else apolloRepository.primaryLanguage()!!.name()
                             )
 
                             repositories.add(repository)
