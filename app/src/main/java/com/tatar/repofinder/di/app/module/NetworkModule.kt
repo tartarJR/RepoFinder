@@ -4,7 +4,7 @@ import android.content.Context
 import com.squareup.picasso.OkHttp3Downloader
 import com.tatar.repofinder.BuildConfig
 import com.tatar.repofinder.di.app.scope.PerApp
-import com.tatar.repofinder.util.ConnectivityManager
+import com.tatar.repofinder.util.ConnectionManager
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
@@ -57,7 +57,7 @@ class NetworkModule {
 
     @PerApp
     @Provides
-    fun NetworkUtil(context: Context): ConnectivityManager {
+    fun NetworkUtil(context: Context): ConnectionManager {
         return NetworkUtil(context)
     }
 }

@@ -3,7 +3,7 @@ package com.tatar.repofinder.util
 import android.content.Context
 import android.net.ConnectivityManager
 
-class ConnectivityManager(val context: Context) {
+class ConnectionManager(val context: Context) {
 
     fun hasInternetConnection(): Boolean {
 
