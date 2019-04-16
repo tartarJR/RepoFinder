@@ -1,13 +1,36 @@
 package com.tatar.repofinder.ui.detail
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.tatar.repofinder.R
+import com.tatar.repofinder.ui.base.BaseActivity
+import com.tatar.repofinder.ui.detail.DetailContract.*
 
-class DetailActivity : AppCompatActivity() {
+class DetailActivity : BaseActivity(), DetailView {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail)
+    override fun getLayoutId(): Int {
+        return R.layout.activity_detail
+    }
+
+    override fun provideDependencies() {
+
+    }
+
+    override fun initViews() {
+
+    }
+
+    override fun init() {
+
+    }
+
+    override fun detachPresenter() {
+
+    }
+
+    override fun displayRepositoryDetails() {
+
+    }
+
+    override fun displayErrorMessage() {
+
     }
 }

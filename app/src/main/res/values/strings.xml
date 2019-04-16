@@ -9,8 +9,9 @@
     <string name="github_fork_icon_iv_description">Github fork icon</string>
     <string name="status_tv_init_txt">Start searching for Github repositories!</string>
     <string name="status_tv_finding_txt">Searching for Github repositories..</string>
-    <string name="status_tv_error_txt">Ups!Something went wrong. Make sure you provide a valid search query or try again later</string>
+    <string name="status_tv_error_txt">Ups! Something went wrong. Make sure you provide a valid search query or try again later</string>
     <string name="status_tv_not_found_txt">No repositories found</string>
     <string name="empty_search_query_message">Please provide a search text</string>
     <string name="no_internet_connection_message">Please make sure you have an internet connection</string>
+    <string name="status_tv_retrieving_details_txt">Retrieving details</string>
 </resources>
