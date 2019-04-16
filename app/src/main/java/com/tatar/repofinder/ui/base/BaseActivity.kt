@@ -21,11 +21,11 @@ abstract class BaseActivity : AppCompatActivity() {
         detachPresenter()
     }
 
-    abstract fun getLayoutId(): Int
-    abstract fun provideDependencies()
-    abstract fun initViews()
-    abstract fun init()
-    abstract fun detachPresenter()
+    protected abstract fun getLayoutId(): Int
+    protected abstract fun provideDependencies()
+    protected abstract fun initViews()
+    protected abstract fun init()
+    protected abstract fun detachPresenter()
 
     protected fun hideKeyboard() {
         val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -38,8 +38,8 @@ abstract class BaseActivity : AppCompatActivity() {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    companion object {
-        const val REPO_NAME_BUNDLE_KEY = "repo_name"
-        const val REPO_OWNER_NAME_BUNDLE_KEY = "repo_owner_name"
+    protected companion object {
+        protected const val REPO_NAME_BUNDLE_KEY = "repo_name"
+        protected const val REPO_OWNER_NAME_BUNDLE_KEY = "repo_owner_name"
     }
 }
