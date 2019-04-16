@@ -9,7 +9,7 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(getLayoutId())
         provideDependencies()
-        attachPresenter()
+        initViews()
         init()
     }
 
@@ -20,8 +20,8 @@ abstract class BaseActivity : AppCompatActivity() {
 
     abstract fun getLayoutId(): Int
     abstract fun provideDependencies()
+    abstract fun initViews()
     abstract fun init()
-    abstract fun attachPresenter()
     abstract fun detachPresenter()
 
     companion object {

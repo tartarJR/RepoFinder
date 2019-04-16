@@ -36,7 +36,7 @@ class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
         searchComponent.injectSearchActivity(this)
     }
 
-    override fun init() {
+    override fun initViews() {
         repository_recycler_view.layoutManager = LinearLayoutManager(this)
         repository_recycler_view.adapter = repositoryAdapter
 
@@ -46,7 +46,7 @@ class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
         }
     }
 
-    override fun attachPresenter() {
+    override fun init() {
         searchPresenter.attach(this)
     }
 
