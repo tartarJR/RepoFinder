@@ -1,15 +1,14 @@
 package com.tatar.repofinder.ui.search
 
 import android.content.Intent
-import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tatar.repofinder.App
 import com.tatar.repofinder.R
 import com.tatar.repofinder.data.model.Repository
 import com.tatar.repofinder.di.search.DaggerSearchComponent
+import com.tatar.repofinder.ui.base.BaseActivity
 import com.tatar.repofinder.ui.detail.DetailActivity
 import com.tatar.repofinder.ui.search.RepositoryAdapter.ItemClickListener
 import com.tatar.repofinder.ui.search.SearchContract.SearchPresenter
@@ -17,20 +16,29 @@ import com.tatar.repofinder.ui.search.SearchContract.SearchView
 import kotlinx.android.synthetic.main.activity_search.*
 import javax.inject.Inject
 
-class SearchActivity : AppCompatActivity(), SearchView, ItemClickListener {
+class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
 
     @Inject
     lateinit var repositoryAdapter: RepositoryAdapter
     @Inject
     lateinit var searchPresenter: SearchPresenter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+    override fun getLayoutId(): Int {
+        return R.layout.activity_search
+    }
 
-        provideDependencies()
-        setUpRecyclerView()
-        searchPresenter.attach(this)
+    override fun provideDependencies() {
+        val searchComponent = DaggerSearchComponent.builder()
+            .searchActivity(this)
+            .itemClickListener(this)
+            .appComponent(App.instance.appComponent()).build()
+
+        searchComponent.injectSearchActivity(this)
+    }
+
+    override fun init() {
+        repository_recycler_view.layoutManager = LinearLayoutManager(this)
+        repository_recycler_view.adapter = repositoryAdapter
 
         repository_search_btn.setOnClickListener {
             val searchQuery = repository_search_view.query.toString()
@@ -38,13 +46,16 @@ class SearchActivity : AppCompatActivity(), SearchView, ItemClickListener {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun attachPresenter() {
+        searchPresenter.attach(this)
+    }
+
+    override fun detachPresenter() {
         searchPresenter.detach()
     }
 
     override fun displayRepositories(repositoryList: ArrayList<Repository>) {
-        // TODO need a better practice(RX or co-routines), avoid runOnUiThread
+        // TODO need a better practice(RX, LiveData or co-routines), avoid runOnUiThread
         runOnUiThread {
             repositoryAdapter.setRepositoryListItems(repositoryList)
             progress_bar.visibility = View.GONE
@@ -67,14 +78,14 @@ class SearchActivity : AppCompatActivity(), SearchView, ItemClickListener {
     }
 
     override fun displayErrorMessage() {
-        // TODO need a better practice(RX or co-routines), avoid runOnUiThread
+        // TODO need a better practice(RX, LiveData or co-routines), avoid runOnUiThread
         runOnUiThread {
             displayMessage(getString(R.string.status_tv_error_txt))
         }
     }
 
     override fun displayNoRepositoriesFoundMessage() {
-        // TODO need a better practice(RX or co-routines), avoid runOnUiThread
+        // TODO need a better practice(RX, LiveData or co-routines), avoid runOnUiThread
         runOnUiThread {
             displayMessage(getString(R.string.status_tv_not_found_txt))
         }
@@ -90,8 +101,8 @@ class SearchActivity : AppCompatActivity(), SearchView, ItemClickListener {
 
     override fun startDetailActivity(repositoryName: String, repositoryOwnerName: String) {
         var intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra("repo_name", repositoryName)
-        intent.putExtra("repo_owner_name", repositoryOwnerName)
+        intent.putExtra(REPO_NAME_BUNDLE_KEY, repositoryName)
+        intent.putExtra(REPO_OWNER_NAME_BUNDLE_KEY, repositoryOwnerName)
         startActivity(intent)
     }
 
@@ -106,19 +117,5 @@ class SearchActivity : AppCompatActivity(), SearchView, ItemClickListener {
         repository_search_view.visibility = View.VISIBLE
         repository_search_btn.visibility = View.VISIBLE
         repository_search_btn.isEnabled = true
-    }
-
-    private fun provideDependencies() {
-        val searchComponent = DaggerSearchComponent.builder()
-            .searchActivity(this)
-            .itemClickListener(this)
-            .appComponent(App.instance.appComponent()).build()
-
-        searchComponent.injectSearchActivity(this)
-    }
-
-    private fun setUpRecyclerView() {
-        repository_recycler_view.layoutManager = LinearLayoutManager(this)
-        repository_recycler_view.adapter = repositoryAdapter
     }
 }
