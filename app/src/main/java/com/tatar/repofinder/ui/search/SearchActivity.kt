@@ -98,10 +98,6 @@ class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
         Toast.makeText(this, getString(R.string.empty_search_query_message), Toast.LENGTH_SHORT).show()
     }
 
-    override fun displayNoInternetWarning() {
-        Toast.makeText(this, getString(R.string.no_internet_connection_message), Toast.LENGTH_SHORT).show()
-    }
-
     override fun startDetailActivity(repositoryName: String, repositoryOwnerName: String) {
         val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra(REPO_NAME_BUNDLE_KEY, repositoryName)
