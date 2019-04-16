@@ -15,10 +15,9 @@ import com.tatar.repofinder.ui.search.RepositoryAdapter.ItemClickListener
 import com.tatar.repofinder.ui.search.SearchContract.SearchPresenter
 import com.tatar.repofinder.ui.search.SearchContract.SearchView
 import kotlinx.android.synthetic.main.activity_search.*
-import org.jetbrains.anko.AnkoLogger
 import javax.inject.Inject
 
-class SearchActivity : AppCompatActivity(), SearchView, ItemClickListener, AnkoLogger {
+class SearchActivity : AppCompatActivity(), SearchView, ItemClickListener {
 
     @Inject
     lateinit var repositoryAdapter: RepositoryAdapter
@@ -31,6 +30,7 @@ class SearchActivity : AppCompatActivity(), SearchView, ItemClickListener, AnkoL
 
         provideDependencies()
         setUpRecyclerView()
+        searchPresenter.attach(this)
 
         repository_search_btn.setOnClickListener {
             val searchQuery = repository_search_view.query.toString()
@@ -38,9 +38,14 @@ class SearchActivity : AppCompatActivity(), SearchView, ItemClickListener, AnkoL
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        searchPresenter.detach()
+    }
+
     override fun displayRepositories(repositoryList: ArrayList<Repository>) {
+        // TODO need a better practice(RX or co-routines), avoid runOnUiThread
         runOnUiThread {
-            // TODO need a better practice
             repositoryAdapter.setRepositoryListItems(repositoryList)
             progress_bar.visibility = View.GONE
             status_tv.visibility = View.GONE
@@ -62,20 +67,20 @@ class SearchActivity : AppCompatActivity(), SearchView, ItemClickListener, AnkoL
     }
 
     override fun displayErrorMessage() {
+        // TODO need a better practice(RX or co-routines), avoid runOnUiThread
         runOnUiThread {
-            // TODO need a better practice
             displayMessage(getString(R.string.status_tv_error_txt))
         }
     }
 
-    override fun displayNotFoundMessage() {
+    override fun displayNoRepositoriesFoundMessage() {
+        // TODO need a better practice(RX or co-routines), avoid runOnUiThread
         runOnUiThread {
-            // TODO need a better practice
             displayMessage(getString(R.string.status_tv_not_found_txt))
         }
     }
 
-    override fun displayEmptySearchQueryWarning() {
+    override fun displayEmptyQueryStringToast() {
         Toast.makeText(this, getString(R.string.empty_search_query_message), Toast.LENGTH_SHORT).show()
     }
 
@@ -91,7 +96,7 @@ class SearchActivity : AppCompatActivity(), SearchView, ItemClickListener, AnkoL
     }
 
     override fun onItemClick(repository: Repository) {
-        searchPresenter.navigateToDetailActivity(repository.name, repository.ownerName)
+        searchPresenter.onRepositoryItemClick(repository.name, repository.ownerName)
     }
 
     private fun displayMessage(message: String) {
@@ -106,7 +111,6 @@ class SearchActivity : AppCompatActivity(), SearchView, ItemClickListener, AnkoL
     private fun provideDependencies() {
         val searchComponent = DaggerSearchComponent.builder()
             .searchActivity(this)
-            .searchView(this)
             .itemClickListener(this)
             .appComponent(App.instance.appComponent()).build()
 

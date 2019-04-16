@@ -4,7 +4,6 @@ import com.tatar.repofinder.data.service.RepositoryService
 import com.tatar.repofinder.ui.search.RepositoryAdapter
 import com.tatar.repofinder.ui.search.RepositoryAdapter.ItemClickListener
 import com.tatar.repofinder.ui.search.SearchContract.SearchPresenter
-import com.tatar.repofinder.ui.search.SearchContract.SearchView
 import com.tatar.repofinder.ui.search.SearchPresenterImpl
 import com.tatar.repofinder.util.ConnectionManager
 import dagger.Module
@@ -17,11 +16,10 @@ object SearchModule {
     @PerSearch
     @Provides
     fun searchPresenter(
-        searchView: SearchView,
         repositoryService: RepositoryService,
         connectionManager: ConnectionManager
     ): SearchPresenter {
-        return SearchPresenterImpl(searchView, repositoryService, connectionManager)
+        return SearchPresenterImpl(repositoryService, connectionManager)
     }
 
     @JvmStatic
