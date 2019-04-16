@@ -1,7 +1,9 @@
 package com.tatar.repofinder.ui.search
 
+import android.app.Activity
 import android.content.Intent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tatar.repofinder.App
@@ -15,6 +17,7 @@ import com.tatar.repofinder.ui.search.SearchContract.SearchPresenter
 import com.tatar.repofinder.ui.search.SearchContract.SearchView
 import kotlinx.android.synthetic.main.activity_search.*
 import javax.inject.Inject
+
 
 class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
 
@@ -63,6 +66,8 @@ class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
             search_result_title_tv.visibility = View.VISIBLE
             repository_recycler_view.visibility = View.VISIBLE
             repository_search_btn.isEnabled = true
+
+            hideKeyboard()
         }
     }
 
@@ -100,7 +105,7 @@ class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
     }
 
     override fun startDetailActivity(repositoryName: String, repositoryOwnerName: String) {
-        var intent = Intent(this, DetailActivity::class.java)
+        val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra(REPO_NAME_BUNDLE_KEY, repositoryName)
         intent.putExtra(REPO_OWNER_NAME_BUNDLE_KEY, repositoryOwnerName)
         startActivity(intent)
