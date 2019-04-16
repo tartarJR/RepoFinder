@@ -8,8 +8,12 @@ interface BaseContract {
     }
 
     interface BaseView {
-        fun activateProgressBar()
+        fun showProgressBar()
+        fun hideProgressBar()
+        fun showStatusTv()
+        fun hideStatusTv()
         fun displayErrorMessage()
         fun displayNoInternetWarning()
+        fun hideKeyboard()
     }
 }

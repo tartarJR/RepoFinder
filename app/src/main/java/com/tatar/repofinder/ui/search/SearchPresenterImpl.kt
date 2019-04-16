@@ -25,7 +25,12 @@ class SearchPresenterImpl(
             if (searchQuery.isEmpty()) {
                 searchView?.displayEmptyQueryStringToast() ?: printDetachedViewErrorLog()
             } else {
-                searchView?.activateProgressBar() ?: printDetachedViewErrorLog()
+                searchView?.disableSearchButton() ?: printDetachedViewErrorLog()
+                searchView?.hideResultContent() ?: printDetachedViewErrorLog()
+                searchView?.showProgressBar() ?: printDetachedViewErrorLog()
+                searchView?.displaySearchingMessage() ?: printDetachedViewErrorLog()
+                searchView?.showStatusTv() ?: printDetachedViewErrorLog()
+
                 repositoryService.getRepositoriesByQualifiersAndKeywords(searchQuery, this)
             }
         }
@@ -36,15 +41,24 @@ class SearchPresenterImpl(
     }
 
     override fun onResponse(repositoryList: ArrayList<Repository>) {
+        searchView?.enableSearchButton() ?: printDetachedViewErrorLog()
+        searchView?.hideProgressBar() ?: printDetachedViewErrorLog()
+
         if (repositoryList.isEmpty()) {
             searchView?.displayNoRepositoriesFoundMessage() ?: printDetachedViewErrorLog()
         } else {
-            searchView?.displayRepositories(repositoryList) ?: printDetachedViewErrorLog()
+            searchView?.hideKeyboard()
+            searchView?.showResultContent(repositoryList) ?: printDetachedViewErrorLog()
+            searchView?.hideStatusTv() ?: printDetachedViewErrorLog()
         }
     }
 
     override fun onError() {
+        searchView?.enableSearchButton() ?: printDetachedViewErrorLog()
+        searchView?.hideResultContent() ?: printDetachedViewErrorLog()
+        searchView?.hideProgressBar() ?: printDetachedViewErrorLog()
         searchView?.displayErrorMessage() ?: printDetachedViewErrorLog()
+        searchView?.showStatusTv() ?: printDetachedViewErrorLog()
     }
 
     override fun attach(searchView: SearchView?) {

@@ -2,7 +2,6 @@ package com.tatar.repofinder.ui.search
 
 import android.content.Intent
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tatar.repofinder.App
 import com.tatar.repofinder.R
@@ -17,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_search.*
 import javax.inject.Inject
 
 
+// TODO need a better practice(RX, LiveData or co-routines) to avoid using runOnUiThread here
 class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
 
     @Inject
@@ -55,47 +55,43 @@ class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
         searchPresenter.detach()
     }
 
-    override fun displayRepositories(repositoryList: ArrayList<Repository>) {
-        // TODO need a better practice(RX, LiveData or co-routines), avoid runOnUiThread
+    override fun showResultContent(repositoryList: ArrayList<Repository>) {
         runOnUiThread {
             repositoryAdapter.setRepositoryListItems(repositoryList)
-            progress_bar.visibility = View.GONE
-            status_tv.visibility = View.GONE
             search_result_title_tv.visibility = View.VISIBLE
             repository_recycler_view.visibility = View.VISIBLE
-            repository_search_btn.isEnabled = true
-
-            hideKeyboard()
         }
     }
 
-    override fun activateProgressBar() {
-        if (repository_recycler_view.visibility == View.VISIBLE) {
-            repository_recycler_view.visibility = View.GONE
-            search_result_title_tv.visibility = View.GONE
-        }
-
-        progress_bar.visibility = View.VISIBLE
-        status_tv.text = getString(R.string.status_tv_finding_txt)
-        repository_search_btn.isEnabled = false
-    }
-
-    override fun displayErrorMessage() {
-        // TODO need a better practice(RX, LiveData or co-routines), avoid runOnUiThread
+    override fun hideResultContent() {
         runOnUiThread {
-            displayMessage(getString(R.string.status_tv_error_txt))
+            search_result_title_tv.visibility = View.GONE
+            repository_recycler_view.visibility = View.GONE
         }
+    }
+
+    override fun displaySearchingMessage() {
+        runOnUiThread { status_tv.text = getString(R.string.status_tv_finding_txt) }
     }
 
     override fun displayNoRepositoriesFoundMessage() {
-        // TODO need a better practice(RX, LiveData or co-routines), avoid runOnUiThread
-        runOnUiThread {
-            displayMessage(getString(R.string.status_tv_not_found_txt))
-        }
+        runOnUiThread { setStatusText(getString(R.string.status_tv_not_found_txt)) }
+    }
+
+    override fun displayErrorMessage() {
+        runOnUiThread { setStatusText(getString(R.string.status_tv_error_txt)) }
     }
 
     override fun displayEmptyQueryStringToast() {
-        Toast.makeText(this, getString(R.string.empty_search_query_message), Toast.LENGTH_SHORT).show()
+        displayToastMessage(getString(R.string.empty_search_query_message))
+    }
+
+    override fun enableSearchButton() {
+        runOnUiThread { repository_search_btn.isEnabled = true }
+    }
+
+    override fun disableSearchButton() {
+        runOnUiThread { repository_search_btn.isEnabled = false }
     }
 
     override fun startDetailActivity(repositoryName: String, repositoryOwnerName: String) {
@@ -107,14 +103,5 @@ class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
 
     override fun onItemClick(repository: Repository) {
         searchPresenter.onRepositoryItemClick(repository.name, repository.ownerName)
-    }
-
-    private fun displayMessage(message: String) {
-        status_tv.text = message
-        status_tv.visibility = View.VISIBLE
-        progress_bar.visibility = View.INVISIBLE
-        repository_search_view.visibility = View.VISIBLE
-        repository_search_btn.visibility = View.VISIBLE
-        repository_search_btn.isEnabled = true
     }
 }
