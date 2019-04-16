@@ -61,8 +61,8 @@ class SearchPresenterImpl(
         searchView?.showStatusTv() ?: printDetachedViewErrorLog()
     }
 
-    override fun attach(searchView: SearchView?) {
-        this.searchView = searchView
+    override fun attach(view: SearchView?) {
+        this.searchView = view
     }
 
     override fun detach() {

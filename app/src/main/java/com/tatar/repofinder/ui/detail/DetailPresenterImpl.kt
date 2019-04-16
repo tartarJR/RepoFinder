@@ -21,12 +21,12 @@ class DetailPresenterImpl(
 
     }
 
-    override fun attach(detailView: DetailView?) {
-        this.detailView = detailView
+    override fun attach(view: DetailView?) {
+        this.detailView = view
     }
 
     override fun detach() {
-        this.detailView = detailView
+        this.detailView = null
     }
 
     override fun onResponse(repositoryList: ArrayList<Repository>) {
