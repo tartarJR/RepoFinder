@@ -83,7 +83,7 @@ class SearchActivity : AppCompatActivity(), SearchView, ItemClickListener, AnkoL
         Toast.makeText(this, getString(R.string.no_internet_connection_message), Toast.LENGTH_SHORT).show()
     }
 
-    override fun displayRepositoryDetail(repositoryName: String, repositoryOwnerName: String) {
+    override fun startDetailActivity(repositoryName: String, repositoryOwnerName: String) {
         var intent = Intent(this, DetailActivity::class.java)
         intent.putExtra("repo_name", repositoryName)
         intent.putExtra("repo_owner_name", repositoryOwnerName)

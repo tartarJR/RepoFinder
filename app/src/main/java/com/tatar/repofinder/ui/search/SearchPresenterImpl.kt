@@ -27,7 +27,7 @@ class SearchPresenterImpl(
     }
 
     override fun navigateToDetailActivity(repositoryName: String, repositoryOwnerName: String) {
-        searchView.displayRepositoryDetail(repositoryName, repositoryOwnerName)
+        searchView.startDetailActivity(repositoryName, repositoryOwnerName)
     }
 
     override fun onResponse(repositoryList: ArrayList<Repository>) {

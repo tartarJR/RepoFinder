@@ -11,7 +11,7 @@ interface SearchContract {
         fun displayNotFoundMessage()
         fun displayEmptySearchQueryWarning()
         fun displayNoInternetWarning()
-        fun displayRepositoryDetail(repositoryName: String, repositoryOwnerName: String)
+        fun startDetailActivity(repositoryName: String, repositoryOwnerName: String)
     }
 
     interface SearchPresenter {
