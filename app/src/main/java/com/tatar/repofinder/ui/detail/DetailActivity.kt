@@ -1,7 +1,7 @@
 package com.tatar.repofinder.ui.detail
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.tatar.repofinder.R
 
 class DetailActivity : AppCompatActivity() {

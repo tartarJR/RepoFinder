@@ -7,7 +7,6 @@ interface DetailContract {
     }
 
     interface DetailPresenter {
-        
-    }
 
+    }
 }
