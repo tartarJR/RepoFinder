@@ -11,9 +11,11 @@ interface SearchContract {
         fun displayNotFoundMessage()
         fun displayEmptySearchQueryWarning()
         fun displayNoInternetWarning()
+        fun displayRepositoryDetail(repositoryName: String, repositoryOwnerName: String)
     }
 
     interface SearchPresenter {
         fun performSearch(searchQuery: String)
+        fun navigateToDetailActivity(repositoryName: String, repositoryOwnerName: String)
     }
 }

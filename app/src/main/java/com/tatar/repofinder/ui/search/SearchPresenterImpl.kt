@@ -26,6 +26,10 @@ class SearchPresenterImpl(
         }
     }
 
+    override fun navigateToDetailActivity(repositoryName: String, repositoryOwnerName: String) {
+        searchView.displayRepositoryDetail(repositoryName, repositoryOwnerName)
+    }
+
     override fun onResponse(repositoryList: ArrayList<Repository>) {
         if (repositoryList.isEmpty()) {
             searchView.displayNotFoundMessage()

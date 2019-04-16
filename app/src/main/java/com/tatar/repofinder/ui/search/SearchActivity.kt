@@ -1,5 +1,6 @@
 package com.tatar.repofinder.ui.search
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -9,6 +10,7 @@ import com.tatar.repofinder.App
 import com.tatar.repofinder.R
 import com.tatar.repofinder.data.model.Repository
 import com.tatar.repofinder.di.search.DaggerSearchComponent
+import com.tatar.repofinder.ui.detail.DetailActivity
 import com.tatar.repofinder.ui.search.RepositoryAdapter.ItemClickListener
 import com.tatar.repofinder.ui.search.SearchContract.SearchPresenter
 import com.tatar.repofinder.ui.search.SearchContract.SearchView
@@ -81,8 +83,15 @@ class SearchActivity : AppCompatActivity(), SearchView, ItemClickListener, AnkoL
         Toast.makeText(this, getString(R.string.no_internet_connection_message), Toast.LENGTH_SHORT).show()
     }
 
+    override fun displayRepositoryDetail(repositoryName: String, repositoryOwnerName: String) {
+        var intent = Intent(this, DetailActivity::class.java)
+        intent.putExtra("repo_name", repositoryName)
+        intent.putExtra("repo_owner_name", repositoryOwnerName)
+        startActivity(intent)
+    }
+
     override fun onItemClick(repository: Repository) {
-        Toast.makeText(this, "${repository.name} Clicked", Toast.LENGTH_SHORT).show() // TODO implement this
+        searchPresenter.navigateToDetailActivity(repository.name, repository.ownerName)
     }
 
     private fun displayMessage(message: String) {
