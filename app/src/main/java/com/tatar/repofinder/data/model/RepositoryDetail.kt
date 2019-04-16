@@ -1,4 +1,7 @@
 package com.tatar.repofinder.data.model
 
-class RepositoryDetail {
-}
+data class RepositoryDetail(
+    var name: String,
+    var subscribers: ArrayList<Subscriber>,
+    var numberOFSubscribers: Int
+)
