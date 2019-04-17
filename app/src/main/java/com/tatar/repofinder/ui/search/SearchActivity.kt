@@ -79,7 +79,7 @@ class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
     }
 
     override fun displayErrorMessage() {
-        runOnUiThread { setStatusText(getString(R.string.status_tv_error_txt)) }
+        runOnUiThread { setStatusText(getString(R.string.status_tv_search_error_txt)) }
     }
 
     override fun displayEmptyQueryStringToast() {
