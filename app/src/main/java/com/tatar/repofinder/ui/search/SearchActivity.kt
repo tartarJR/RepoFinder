@@ -71,15 +71,15 @@ class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
     }
 
     override fun displaySearchingMessage() {
-        runOnUiThread { status_tv.text = getString(R.string.status_tv_finding_txt) }
+        runOnUiThread { status_tv.text = getString(R.string.searching_repos_txt) }
     }
 
     override fun displayNoRepositoriesFoundMessage() {
-        runOnUiThread { setStatusText(getString(R.string.status_tv_not_found_txt)) }
+        runOnUiThread { setStatusText(getString(R.string.no_repos_found_txt)) }
     }
 
     override fun displayErrorMessage() {
-        runOnUiThread { setStatusText(getString(R.string.status_tv_search_error_txt)) }
+        runOnUiThread { setStatusText(getString(R.string.search_error_txt)) }
     }
 
     override fun displayEmptyQueryStringToast() {
@@ -96,8 +96,8 @@ class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
 
     override fun startDetailActivity(repositoryName: String, repositoryOwnerName: String) {
         val intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra(REPO_NAME_BUNDLE_KEY, repositoryName)
-        intent.putExtra(REPO_OWNER_NAME_BUNDLE_KEY, repositoryOwnerName)
+        intent.putExtra(EXTRA_KEY_REPO_NAME, repositoryName)
+        intent.putExtra(EXTRA_KEY_REPO_OWNER_NAME, repositoryOwnerName)
         startActivity(intent)
     }
 

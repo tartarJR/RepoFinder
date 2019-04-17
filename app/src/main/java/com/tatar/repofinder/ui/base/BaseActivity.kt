@@ -81,7 +81,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseContract.BaseView {
     }
 
     protected companion object {
-        internal const val REPO_NAME_BUNDLE_KEY = "repo_name"
-        internal const val REPO_OWNER_NAME_BUNDLE_KEY = "repo_owner_name"
+        internal const val EXTRA_KEY_REPO_NAME = "repo_name"
+        internal const val EXTRA_KEY_REPO_OWNER_NAME = "repo_owner_name"
     }
 }

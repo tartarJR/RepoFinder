@@ -61,9 +61,9 @@ class SearchPresenterImpl(
             if (repositories.isEmpty()) {
                 searchView?.displayNoRepositoriesFoundMessage()
             } else {
+                searchView?.hideStatusTv()
                 searchView?.hideKeyboard()
                 searchView?.showResultContent(repositories)
-                searchView?.hideStatusTv()
             }
         } else {
             logger.error(DETACHED_VIEW_ERROR)

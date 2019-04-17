@@ -40,10 +40,10 @@ class RepoAdapter(private val picasso: Picasso, private val itemClickListener: I
         fun bind(repo: Repo, itemClickListener: ItemClickListener) = with(itemView) {
             repo_name_tv.text = repo.name
             picasso.load(repo.ownerAvatarUrl).into(repo_owner_avatar_iv)
-            repo_description_tv.text = if (repo.description == null) "--" else repo.description
+            repo_description_tv.text = if (repo.description.isNullOrBlank()) "--" else repo.description
             repo_owner_name_tv.text = repo.ownerName
             repo_fork_count_tv.text = repo.forkCount.toString()
-            repo_primary_language_tv.text = if (repo.primaryLanguage == null) "--" else repo.primaryLanguage
+            repo_primary_language_tv.text = if (repo.primaryLanguage.isNullOrBlank()) "--" else repo.primaryLanguage
 
             setOnClickListener { itemClickListener.onItemClick(repo) }
         }
