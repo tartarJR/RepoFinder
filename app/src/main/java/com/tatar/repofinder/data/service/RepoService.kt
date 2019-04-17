@@ -29,7 +29,7 @@ class RepoService(private val apolloClient: ApolloClient) {
             .enqueue(object : ApolloCall.Callback<GetRepositoriesByQualifiersAndKeywordsQuery.Data>() {
                 override fun onFailure(e: ApolloException) {
                     repoServiceListener.onError()
-                    error(e)
+                    logger.error(e)
                 }
 
                 override fun onResponse(response: Response<GetRepositoriesByQualifiersAndKeywordsQuery.Data>) {
