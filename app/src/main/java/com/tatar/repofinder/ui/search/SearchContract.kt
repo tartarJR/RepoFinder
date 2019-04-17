@@ -1,13 +1,13 @@
 package com.tatar.repofinder.ui.search
 
-import com.tatar.repofinder.data.model.Repository
+import com.tatar.repofinder.data.model.Repo
 import com.tatar.repofinder.ui.base.BaseContract.BasePresenter
 import com.tatar.repofinder.ui.base.BaseContract.BaseView
 
 interface SearchContract {
 
     interface SearchView : BaseView {
-        fun showResultContent(repositoryList: ArrayList<Repository>)
+        fun showResultContent(repoList: ArrayList<Repo>)
         fun hideResultContent()
         fun displaySearchingMessage()
         fun displayNoRepositoriesFoundMessage()

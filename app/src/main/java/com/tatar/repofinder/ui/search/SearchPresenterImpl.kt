@@ -1,64 +1,85 @@
 package com.tatar.repofinder.ui.search
 
-import com.tatar.repofinder.data.model.Repository
-import com.tatar.repofinder.data.service.RepositoryService
-import com.tatar.repofinder.data.service.RepositoryService.ResponseListener
+import com.tatar.repofinder.data.model.Repo
+import com.tatar.repofinder.data.service.RepoService
+import com.tatar.repofinder.data.service.RepoServiceResponse
+import com.tatar.repofinder.data.service.RepoServiceListener
+import com.tatar.repofinder.ui.base.BaseContract.BasePresenter.Companion.DETACHED_VIEW_ERROR
 import com.tatar.repofinder.ui.search.SearchContract.SearchPresenter
 import com.tatar.repofinder.ui.search.SearchContract.SearchView
 import com.tatar.repofinder.util.ConnectionManager
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.error
 
+// TODO I don't like this if else check for the view
 class SearchPresenterImpl(
-    private val repositoryService: RepositoryService,
+    private val repoService: RepoService,
     private val connectionManager: ConnectionManager
-) : SearchPresenter, ResponseListener<Repository> {
+) : SearchPresenter, RepoServiceListener<Repo> {
 
     private val logger = AnkoLogger(SearchPresenterImpl::class.java)
 
     private var searchView: SearchView? = null
 
     override fun performSearch(searchQuery: String) {
-        if (!connectionManager.hasInternetConnection()) {
-            searchView?.displayNoInternetWarning() ?: printDetachedViewErrorLog()
-        } else {
-            if (searchQuery.isEmpty()) {
-                searchView?.displayEmptyQueryStringToast() ?: printDetachedViewErrorLog()
+        if (this.searchView != null) {
+            if (!connectionManager.hasInternetConnection()) {
+                searchView?.displayNoInternetWarning()
             } else {
-                searchView?.disableSearchButton() ?: printDetachedViewErrorLog()
-                searchView?.hideResultContent() ?: printDetachedViewErrorLog()
-                searchView?.showProgressBar() ?: printDetachedViewErrorLog()
-                searchView?.displaySearchingMessage() ?: printDetachedViewErrorLog()
-                searchView?.showStatusTv() ?: printDetachedViewErrorLog()
+                if (searchQuery.isEmpty()) {
+                    searchView?.displayEmptyQueryStringToast()
+                } else {
+                    searchView?.disableSearchButton()
+                    searchView?.hideResultContent()
+                    searchView?.showProgressBar()
+                    searchView?.displaySearchingMessage()
+                    searchView?.showStatusTv()
 
-                repositoryService.getRepositoriesByQualifiersAndKeywords(searchQuery, this)
+                    repoService.getRepositoriesByQualifiersAndKeywords(searchQuery, this)
+                }
             }
+        } else {
+            logger.error(DETACHED_VIEW_ERROR)
         }
     }
 
     override fun onRepositoryItemClick(repositoryName: String, repositoryOwnerName: String) {
-        searchView?.startDetailActivity(repositoryName, repositoryOwnerName)
+        if (this.searchView != null) {
+            searchView?.startDetailActivity(repositoryName, repositoryOwnerName)
+        } else {
+            logger.error(DETACHED_VIEW_ERROR)
+        }
     }
 
-    override fun onResponse(responseItems: ArrayList<Repository>) {
-        searchView?.enableSearchButton() ?: printDetachedViewErrorLog()
-        searchView?.hideProgressBar() ?: printDetachedViewErrorLog()
+    override fun onResponse(repoServiceResponse: RepoServiceResponse<Repo>) {
+        if (this.searchView != null) {
+            searchView?.enableSearchButton()
+            searchView?.hideProgressBar()
 
-        if (responseItems.isEmpty()) {
-            searchView?.displayNoRepositoriesFoundMessage() ?: printDetachedViewErrorLog()
+            val repositories = repoServiceResponse.items
+
+            if (repositories.isEmpty()) {
+                searchView?.displayNoRepositoriesFoundMessage()
+            } else {
+                searchView?.hideKeyboard()
+                searchView?.showResultContent(repositories)
+                searchView?.hideStatusTv()
+            }
         } else {
-            searchView?.hideKeyboard()
-            searchView?.showResultContent(responseItems) ?: printDetachedViewErrorLog()
-            searchView?.hideStatusTv() ?: printDetachedViewErrorLog()
+            logger.error(DETACHED_VIEW_ERROR)
         }
     }
 
     override fun onError() {
-        searchView?.enableSearchButton() ?: printDetachedViewErrorLog()
-        searchView?.hideResultContent() ?: printDetachedViewErrorLog()
-        searchView?.hideProgressBar() ?: printDetachedViewErrorLog()
-        searchView?.displayErrorMessage() ?: printDetachedViewErrorLog()
-        searchView?.showStatusTv() ?: printDetachedViewErrorLog()
+        if (this.searchView != null) {
+            searchView?.enableSearchButton()
+            searchView?.hideResultContent()
+            searchView?.hideProgressBar()
+            searchView?.displayErrorMessage()
+            searchView?.showStatusTv()
+        } else {
+            logger.error(DETACHED_VIEW_ERROR)
+        }
     }
 
     override fun attach(view: SearchView?) {
@@ -67,9 +88,5 @@ class SearchPresenterImpl(
 
     override fun detach() {
         this.searchView = null
-    }
-
-    private fun printDetachedViewErrorLog() {
-        logger.error("View is detached")
     }
 }
