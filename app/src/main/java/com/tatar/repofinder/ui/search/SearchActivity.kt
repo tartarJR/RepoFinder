@@ -57,7 +57,7 @@ class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
 
     override fun showResultContent(repoList: ArrayList<Repo>) {
         runOnUiThread {
-            repoAdapter.setRepositoryListItems(repoList)
+            repoAdapter.setRepos(repoList)
             search_result_title_tv.visibility = View.VISIBLE
             repository_recycler_view.visibility = View.VISIBLE
         }

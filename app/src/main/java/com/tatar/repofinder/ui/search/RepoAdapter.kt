@@ -8,36 +8,32 @@ import com.squareup.picasso.Picasso
 import com.tatar.repofinder.R
 import com.tatar.repofinder.data.model.Repo
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.repository_list_item.*
+import kotlinx.android.synthetic.main.repo_list_item.*
 
 class RepoAdapter(private val picasso: Picasso, private val itemClickListener: ItemClickListener) :
-    RecyclerView.Adapter<RepoAdapter.RepositoryViewHolder>() {
+    RecyclerView.Adapter<RepoAdapter.RepoViewHolder>() {
 
-    private var repoList: List<Repo>
+    private var repos: List<Repo> = ArrayList()
 
-    init {
-        repoList = ArrayList()
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepositoryViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.repository_list_item, parent, false)
-        return RepositoryViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.repo_list_item, parent, false)
+        return RepoViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-        return repoList.size
+        return repos.size
     }
 
-    override fun onBindViewHolder(holder: RepositoryViewHolder, position: Int) {
-        holder.bind(repoList[position], itemClickListener)
+    override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
+        holder.bind(repos[position], itemClickListener)
     }
 
-    fun setRepositoryListItems(repoList: List<Repo>) {
-        this.repoList = repoList
+    fun setRepos(repoList: List<Repo>) {
+        this.repos = repoList
         notifyDataSetChanged()
     }
 
-    inner class RepositoryViewHolder(override val containerView: View) :
+    inner class RepoViewHolder(override val containerView: View) :
         RecyclerView.ViewHolder(containerView),
         LayoutContainer {
 
