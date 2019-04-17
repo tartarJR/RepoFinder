@@ -23,17 +23,20 @@
             android:contentDescription="@string/subscriber_avatar_iv_description"
             app:civ_border_color="#FF000000"
             app:civ_border_width="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@mipmap/ic_launcher_round" />
 
         <TextView
             android:id="@+id/subscriber_name_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:textSize="18sp"
+            android:layout_marginStart="8dp"
+            android:gravity="start"
+            android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/subscriber_bio_tv"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/subscriber_avatar_iv"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
@@ -41,14 +44,17 @@
 
         <TextView
             android:id="@+id/subscriber_bio_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
+            android:gravity="start"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/subscriber_avatar_iv"
             app:layout_constraintTop_toBottomOf="@+id/subscriber_name_tv"
             app:layout_constraintVertical_chainStyle="packed"
-            tools:text="Android craftsman at Google" />
+            tools:text="Android craftsman at Google dope developer very good developer best android developer ever android is dope google is the best" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
