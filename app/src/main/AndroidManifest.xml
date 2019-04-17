@@ -24,6 +24,7 @@
             android:name=".ui.search.SearchActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
+            android:theme="@style/SearchTheme"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

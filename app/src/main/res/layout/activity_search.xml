@@ -40,7 +40,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/search_result_title_tv_txt"
-        android:textColor="#9D9D9D"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="18sp"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,10 +54,8 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_result_title_tv"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/search_result_title_tv" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -76,6 +74,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/search_screen_init_txt"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
