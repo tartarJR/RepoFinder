@@ -2,7 +2,7 @@
     <string name="app_name">RepoFinder</string>
 
     <!--Common-->
-    <string name="no_internet_connection_message">Please make sure you have an internet connection</string>
+    <string name="no_internet_connection_message">Please make sure you have an internet connection and try again</string>
     <string name="status_tv_error_txt">Ups! Something went wrong.</string>
 
     <!--SearchActivity-->

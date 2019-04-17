@@ -56,7 +56,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseContract.BaseView {
     }
 
     override fun displayNoInternetWarning() {
-        Toast.makeText(this, getString(R.string.no_internet_connection_message), Toast.LENGTH_SHORT).show()
+        statusTextView?.text = getString(R.string.no_internet_connection_message)
     }
 
     override fun hideKeyboard() {
