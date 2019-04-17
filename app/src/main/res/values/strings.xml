@@ -7,7 +7,7 @@
 
     <!--SearchActivity-->
     <string name="search_btn_txt">SEARCH</string>
-    <string name="search_result_title_tv_txt">Repositories Found</string>
+    <string name="search_result_title_tv_txt">Displaying first 25 of %1$d search results</string>
     <string name="repo_owner_avatar_iv_description">Avatar of the repository owner</string>
     <string name="github_fork_icon_iv_description">Github fork icon</string>
     <string name="search_screen_init_txt">Start searching for Github repositories!</string>
@@ -17,7 +17,7 @@
     <string name="empty_search_query_message">Please provide a search text</string>
 
     <!--DetailActivity-->
-    <string name="detail_tv_txt">%1$s has %2$d subscribers</string>
+    <string name="detail_tv_txt">Displaying first 25 of %1$d subscribers that %2$s has</string>
     <string name="retrieving_details_txt">Retrieving details..</string>
     <string name="subscriber_avatar_iv_description">Subscriber avatar</string>
     <string name="no_subscribers_found_txt">No subscribers found</string>

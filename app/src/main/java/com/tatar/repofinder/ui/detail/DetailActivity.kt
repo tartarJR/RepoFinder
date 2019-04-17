@@ -52,7 +52,7 @@ class DetailActivity : BaseActivity(), DetailView {
 
     override fun displayDetailText(repoName: String, numberOfSubscriber: Int) {
         runOnUiThread {
-            detail_tv.text = getString(R.string.detail_tv_txt, repoName, numberOfSubscriber)
+            detail_tv.text = getString(R.string.detail_tv_txt, numberOfSubscriber, repoName)
             detail_tv.visibility = View.VISIBLE
         }
     }
