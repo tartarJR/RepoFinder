@@ -24,7 +24,9 @@ class SearchPresenterImpl(
     override fun performSearch(searchQuery: String) {
         if (this.searchView != null) {
             if (!connectionManager.hasInternetConnection()) {
+                searchView?.hideResultContent()
                 searchView?.displayNoInternetWarning()
+                searchView?.showStatusTv()
             } else {
                 if (searchQuery.isEmpty()) {
                     searchView?.displayEmptyQueryStringToast()
