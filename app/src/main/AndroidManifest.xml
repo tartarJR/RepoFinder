@@ -17,6 +17,8 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".ui.detail.DetailActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleTask"
             android:parentActivityName=".ui.search.SearchActivity" />
         <activity
             android:name=".ui.search.SearchActivity"
