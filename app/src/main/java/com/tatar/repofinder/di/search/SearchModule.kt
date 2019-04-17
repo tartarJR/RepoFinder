@@ -1,6 +1,6 @@
 package com.tatar.repofinder.di.search
 
-import com.tatar.repofinder.data.service.RepositoryService
+import com.tatar.repofinder.data.service.RepoService
 import com.tatar.repofinder.ui.search.RepositoryAdapter
 import com.tatar.repofinder.ui.search.RepositoryAdapter.ItemClickListener
 import com.tatar.repofinder.ui.search.SearchContract.SearchPresenter
@@ -16,10 +16,10 @@ object SearchModule {
     @PerSearch
     @Provides
     fun searchPresenter(
-        repositoryService: RepositoryService,
+        repoService: RepoService,
         connectionManager: ConnectionManager
     ): SearchPresenter {
-        return SearchPresenterImpl(repositoryService, connectionManager)
+        return SearchPresenterImpl(repoService, connectionManager)
     }
 
     @JvmStatic

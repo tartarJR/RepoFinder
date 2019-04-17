@@ -1,18 +1,18 @@
 package com.tatar.repofinder.di.app.module
 
 import com.apollographql.apollo.ApolloClient
-import com.tatar.repofinder.data.service.RepositoryService
+import com.tatar.repofinder.data.service.RepoService
 import com.tatar.repofinder.di.app.scope.PerApp
 import dagger.Module
 import dagger.Provides
 
 @Module(includes = [ApolloModule::class])
-object RepositoryServiceModule {
+object RepoServiceModule {
 
     @JvmStatic
     @PerApp
     @Provides
-    fun repositoryService(apolloClient: ApolloClient): RepositoryService {
-        return RepositoryService(apolloClient)
+    fun repoService(apolloClient: ApolloClient): RepoService {
+        return RepoService(apolloClient)
     }
 }
