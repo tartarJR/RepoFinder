@@ -35,7 +35,7 @@ class SearchPresenterImpl(
                     searchView?.displaySearchingMessage()
                     searchView?.showStatusTv()
 
-                    repoService.getRepositoriesByQualifiersAndKeywords(searchQuery, this)
+                    repoService.getRepositoriesByQualifiersAndKeywords(searchQuery.trim(), this)
                 }
             }
         } else {
