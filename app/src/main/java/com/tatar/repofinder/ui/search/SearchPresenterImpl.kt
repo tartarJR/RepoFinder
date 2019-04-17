@@ -29,7 +29,6 @@ class SearchPresenterImpl(
                 if (searchQuery.isEmpty()) {
                     searchView?.displayEmptyQueryStringToast()
                 } else {
-                    searchView?.disableSearchButton()
                     searchView?.hideResultContent()
                     searchView?.showProgressBar()
                     searchView?.displaySearchingMessage()
@@ -53,9 +52,9 @@ class SearchPresenterImpl(
 
     override fun onResponse(repoServiceResponse: RepoServiceResponse<Repo>) {
         if (this.searchView != null) {
-            searchView?.enableSearchButton()
             searchView?.hideProgressBar()
 
+            val numberOfReposFound = repoServiceResponse.itemCount
             val repositories = repoServiceResponse.items
 
             if (repositories.isEmpty()) {
@@ -63,7 +62,7 @@ class SearchPresenterImpl(
             } else {
                 searchView?.hideStatusTv()
                 searchView?.hideKeyboard()
-                searchView?.showResultContent(repositories)
+                searchView?.showResultContent(numberOfReposFound, repositories)
             }
         } else {
             logger.error(DETACHED_VIEW_ERROR)
@@ -72,7 +71,6 @@ class SearchPresenterImpl(
 
     override fun onError() {
         if (this.searchView != null) {
-            searchView?.enableSearchButton()
             searchView?.hideResultContent()
             searchView?.hideProgressBar()
             searchView?.displayErrorMessage()

@@ -1,8 +1,10 @@
 package com.tatar.repofinder.ui.search
 
 import android.content.Intent
+import android.view.Menu
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.miguelcatalan.materialsearchview.MaterialSearchView
 import com.tatar.repofinder.App
 import com.tatar.repofinder.R
 import com.tatar.repofinder.data.model.Repo
@@ -24,6 +26,13 @@ class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
     @Inject
     lateinit var searchPresenter: SearchPresenter
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_item, menu)
+        var menuItem = menu?.findItem(R.id.action_search)
+        search_view.setMenuItem(menuItem)
+        return true
+    }
+
     override fun getLayoutId(): Int {
         return R.layout.activity_search
     }
@@ -38,13 +47,21 @@ class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
     }
 
     override fun initViews() {
+        setSupportActionBar(tool_bar)
+
+        search_view.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                searchPresenter.performSearch(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                return false
+            }
+        })
+
         repository_recycler_view.layoutManager = LinearLayoutManager(this)
         repository_recycler_view.adapter = repoAdapter
-
-        repository_search_btn.setOnClickListener {
-            val searchQuery = repository_search_view.query.toString()
-            searchPresenter.performSearch(searchQuery)
-        }
     }
 
     override fun init() {
@@ -55,9 +72,10 @@ class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
         searchPresenter.detach()
     }
 
-    override fun showResultContent(repoList: ArrayList<Repo>) {
+    override fun showResultContent(numberOfReposFound: Int, repoList: ArrayList<Repo>) {
         runOnUiThread {
             repoAdapter.setRepos(repoList)
+            search_result_title_tv.text = getString(R.string.search_result_title_tv_txt, numberOfReposFound)
             search_result_title_tv.visibility = View.VISIBLE
             repository_recycler_view.visibility = View.VISIBLE
         }
@@ -84,14 +102,6 @@ class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
 
     override fun displayEmptyQueryStringToast() {
         displayToastMessage(getString(R.string.empty_search_query_message))
-    }
-
-    override fun enableSearchButton() {
-        runOnUiThread { repository_search_btn.isEnabled = true }
-    }
-
-    override fun disableSearchButton() {
-        runOnUiThread { repository_search_btn.isEnabled = false }
     }
 
     override fun startDetailActivity(repositoryName: String, repositoryOwnerName: String) {
