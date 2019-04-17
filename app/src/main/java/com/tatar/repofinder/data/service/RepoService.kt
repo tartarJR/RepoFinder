@@ -120,6 +120,6 @@ class RepoService(private val apolloClient: ApolloClient) {
     }
 
     companion object {
-        private const val NUM_OF_ITEMS_IN_PAGE = 25
+        internal const val NUM_OF_ITEMS_IN_PAGE = 25
     }
 }

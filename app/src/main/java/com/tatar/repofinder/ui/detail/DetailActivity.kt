@@ -40,8 +40,8 @@ class DetailActivity : BaseActivity(), DetailView {
     override fun init() {
         detailPresenter.attach(this)
 
-        var incomingRepoName = intent.getStringExtra(EXTRA_KEY_REPO_NAME)
-        var incomingRepoOwnerName = intent.getStringExtra(EXTRA_KEY_REPO_OWNER_NAME)
+        val incomingRepoName = intent.getStringExtra(EXTRA_KEY_REPO_NAME)
+        val incomingRepoOwnerName = intent.getStringExtra(EXTRA_KEY_REPO_OWNER_NAME)
 
         detailPresenter.getRepositoryDetails(incomingRepoName, incomingRepoOwnerName)
     }
@@ -50,9 +50,9 @@ class DetailActivity : BaseActivity(), DetailView {
         detailPresenter.detach()
     }
 
-    override fun displayDetailText(repoName: String, numberOfSubscriber: Int) {
+    override fun displayDetailText(repoName: String, numberOfInitDisplays: Int, numberOfSubscriber: Int) {
         runOnUiThread {
-            detail_tv.text = getString(R.string.detail_tv_txt, numberOfSubscriber, repoName)
+            detail_tv.text = getString(R.string.detail_tv_txt, numberOfInitDisplays, numberOfSubscriber, repoName)
             detail_tv.visibility = View.VISIBLE
         }
     }

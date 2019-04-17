@@ -2,8 +2,8 @@ package com.tatar.repofinder.ui.search
 
 import com.tatar.repofinder.data.model.Repo
 import com.tatar.repofinder.data.service.RepoService
-import com.tatar.repofinder.data.service.RepoServiceResponse
 import com.tatar.repofinder.data.service.RepoServiceListener
+import com.tatar.repofinder.data.service.RepoServiceResponse
 import com.tatar.repofinder.ui.base.BaseContract.BasePresenter.Companion.DETACHED_VIEW_ERROR
 import com.tatar.repofinder.ui.search.SearchContract.SearchPresenter
 import com.tatar.repofinder.ui.search.SearchContract.SearchView
@@ -62,7 +62,14 @@ class SearchPresenterImpl(
             } else {
                 searchView?.hideStatusTv()
                 searchView?.hideKeyboard()
-                searchView?.showResultContent(numberOfReposFound, repositories)
+
+                if (numberOfReposFound < RepoService.NUM_OF_ITEMS_IN_PAGE) {
+                    searchView?.displayResultText(numberOfReposFound, numberOfReposFound)
+                } else {
+                    searchView?.displayResultText(RepoService.NUM_OF_ITEMS_IN_PAGE, numberOfReposFound)
+                }
+
+                searchView?.displayRepoList(repositories)
             }
         } else {
             logger.error(DETACHED_VIEW_ERROR)

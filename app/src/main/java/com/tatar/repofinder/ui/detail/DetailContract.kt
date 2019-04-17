@@ -7,7 +7,7 @@ import com.tatar.repofinder.ui.base.BaseContract.BaseView
 interface DetailContract {
 
     interface DetailView : BaseView {
-        fun displayDetailText(repoName: String, numberOfSubscriber: Int)
+        fun displayDetailText(repoName: String, numberOfInitDisplays: Int, numberOfSubscriber: Int)
         fun displayRepositoryDetails(subscribers: ArrayList<Subscriber>)
         fun displayNoSubscriberFoundMessage()
         fun hideSubscriberList()

@@ -7,7 +7,8 @@ import com.tatar.repofinder.ui.base.BaseContract.BaseView
 interface SearchContract {
 
     interface SearchView : BaseView {
-        fun showResultContent(numberOfReposFound: Int, repoList: ArrayList<Repo>)
+        fun displayResultText(numberOfInitDisplays: Int, numberOfReposFound: Int)
+        fun displayRepoList(repoList: ArrayList<Repo>)
         fun hideResultContent()
         fun displaySearchingMessage()
         fun displayNoRepositoriesFoundMessage()

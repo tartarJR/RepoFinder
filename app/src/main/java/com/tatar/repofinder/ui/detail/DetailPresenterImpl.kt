@@ -53,7 +53,11 @@ class DetailPresenterImpl(
             val numberOfSubscribers = repoServiceResponse.itemCount
             val subscribers = repoServiceResponse.items
 
-            detailView?.displayDetailText(incomingRepoName, numberOfSubscribers)
+            if (numberOfSubscribers < RepoService.NUM_OF_ITEMS_IN_PAGE) {
+                detailView?.displayDetailText(incomingRepoName, numberOfSubscribers, numberOfSubscribers)
+            } else {
+                detailView?.displayDetailText(incomingRepoName, RepoService.NUM_OF_ITEMS_IN_PAGE, numberOfSubscribers)
+            }
 
             if (subscribers.isEmpty()) {
                 detailView?.displayNoSubscriberFoundMessage()

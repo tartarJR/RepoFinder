@@ -28,7 +28,7 @@ class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_item, menu)
-        var menuItem = menu?.findItem(R.id.action_search)
+        val menuItem = menu?.findItem(R.id.action_search)
         search_view.setMenuItem(menuItem)
         return true
     }
@@ -72,12 +72,18 @@ class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
         searchPresenter.detach()
     }
 
-    override fun showResultContent(numberOfReposFound: Int, repoList: ArrayList<Repo>) {
+    override fun displayRepoList(repoList: ArrayList<Repo>) {
         runOnUiThread {
             repoAdapter.setRepos(repoList)
-            search_result_title_tv.text = getString(R.string.search_result_title_tv_txt, numberOfReposFound)
-            search_result_title_tv.visibility = View.VISIBLE
             repository_recycler_view.visibility = View.VISIBLE
+        }
+    }
+
+    override fun displayResultText(numberOfInitDisplays: Int, numberOfReposFound: Int) {
+        runOnUiThread {
+            search_result_title_tv.text =
+                getString(R.string.search_result_title_tv_txt, numberOfInitDisplays, numberOfReposFound)
+            search_result_title_tv.visibility = View.VISIBLE
         }
     }
 
