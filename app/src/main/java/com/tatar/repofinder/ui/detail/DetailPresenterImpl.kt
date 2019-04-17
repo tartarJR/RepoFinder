@@ -2,8 +2,8 @@ package com.tatar.repofinder.ui.detail
 
 import com.tatar.repofinder.data.model.Subscriber
 import com.tatar.repofinder.data.service.RepoService
-import com.tatar.repofinder.data.service.RepoServiceResponse
 import com.tatar.repofinder.data.service.RepoServiceListener
+import com.tatar.repofinder.data.service.RepoServiceResponse
 import com.tatar.repofinder.ui.base.BaseContract
 import com.tatar.repofinder.ui.detail.DetailContract.DetailPresenter
 import com.tatar.repofinder.ui.detail.DetailContract.DetailView
@@ -20,10 +20,16 @@ class DetailPresenterImpl(
 
     private var detailView: DetailView? = null
 
+    private var incomingRepoName = ""
+
     override fun getRepositoryDetails(repoName: String, repoOwnerName: String) {
+
+        this.incomingRepoName = repoName
+
         if (this.detailView != null) {
             if (!connectionManager.hasInternetConnection()) {
                 detailView?.displayNoInternetWarning()
+                detailView?.hideProgressBar()
             } else {
                 repoService.getRepositoryDetails(repoName, repoOwnerName, this)
             }
@@ -44,7 +50,10 @@ class DetailPresenterImpl(
         if (this.detailView != null) {
             detailView?.hideProgressBar()
 
+            val numberOfSubscribers = repoServiceResponse.itemCount
             val subscribers = repoServiceResponse.items
+
+            detailView?.displayDetailText(incomingRepoName, numberOfSubscribers)
 
             if (subscribers.isEmpty()) {
                 detailView?.displayNoSubscriberFoundMessage()
@@ -59,6 +68,7 @@ class DetailPresenterImpl(
 
     override fun onError() {
         if (this.detailView != null) {
+            detailView?.hideDetailText()
             detailView?.hideSubscriberList()
             detailView?.hideProgressBar()
             detailView?.displayErrorMessage()
@@ -67,5 +77,4 @@ class DetailPresenterImpl(
             logger.error(BaseContract.BasePresenter.DETACHED_VIEW_ERROR)
         }
     }
-
 }
