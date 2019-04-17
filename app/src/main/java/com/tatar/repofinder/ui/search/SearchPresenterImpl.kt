@@ -2,7 +2,7 @@ package com.tatar.repofinder.ui.search
 
 import com.tatar.repofinder.data.model.Repository
 import com.tatar.repofinder.data.service.RepositoryService
-import com.tatar.repofinder.data.service.RepositoryService.OnFinishedListener
+import com.tatar.repofinder.data.service.RepositoryService.ResponseListener
 import com.tatar.repofinder.ui.search.SearchContract.SearchPresenter
 import com.tatar.repofinder.ui.search.SearchContract.SearchView
 import com.tatar.repofinder.util.ConnectionManager
@@ -12,7 +12,7 @@ import org.jetbrains.anko.error
 class SearchPresenterImpl(
     private val repositoryService: RepositoryService,
     private val connectionManager: ConnectionManager
-) : SearchPresenter, OnFinishedListener {
+) : SearchPresenter, ResponseListener<Repository> {
 
     private val logger = AnkoLogger(SearchPresenterImpl::class.java)
 
@@ -40,15 +40,15 @@ class SearchPresenterImpl(
         searchView?.startDetailActivity(repositoryName, repositoryOwnerName)
     }
 
-    override fun onResponse(repositoryList: ArrayList<Repository>) {
+    override fun onResponse(responseItems: ArrayList<Repository>) {
         searchView?.enableSearchButton() ?: printDetachedViewErrorLog()
         searchView?.hideProgressBar() ?: printDetachedViewErrorLog()
 
-        if (repositoryList.isEmpty()) {
+        if (responseItems.isEmpty()) {
             searchView?.displayNoRepositoriesFoundMessage() ?: printDetachedViewErrorLog()
         } else {
             searchView?.hideKeyboard()
-            searchView?.showResultContent(repositoryList) ?: printDetachedViewErrorLog()
+            searchView?.showResultContent(responseItems) ?: printDetachedViewErrorLog()
             searchView?.hideStatusTv() ?: printDetachedViewErrorLog()
         }
     }

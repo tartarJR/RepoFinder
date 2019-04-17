@@ -5,25 +5,26 @@ import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.exception.ApolloException
 import com.tatar.repofinder.data.model.Repository
+import com.tatar.repofinder.data.model.Subscriber
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.error
 import type.SearchType
 
 class RepositoryService(private val apolloClient: ApolloClient) : AnkoLogger {
 
-    fun getRepositoriesByQualifiersAndKeywords(searchParam: String, onFinishedListener: OnFinishedListener) {
+    fun getRepositoriesByQualifiersAndKeywords(searchParam: String, responseListener: ResponseListener<Repository>) {
 
         val searchQuery = GetRepositoriesByQualifiersAndKeywordsQuery
             .builder()
             .query(searchParam)
-            .first(25)
+            .first(NUM_OF_ITEMS_IN_PAGE)
             .type(SearchType.REPOSITORY)
             .build()
 
         apolloClient.query(searchQuery)
             .enqueue(object : ApolloCall.Callback<GetRepositoriesByQualifiersAndKeywordsQuery.Data>() {
                 override fun onFailure(e: ApolloException) {
-                    onFinishedListener.onError()
+                    responseListener.onError()
                     error(e)
                 }
 
@@ -32,7 +33,7 @@ class RepositoryService(private val apolloClient: ApolloClient) : AnkoLogger {
                     val errors = response.errors()
 
                     if (errors.isNotEmpty()) {
-                        onFinishedListener.onError()
+                        responseListener.onError()
                         val message = errors[0]?.message() ?: ""
                         error("ERROR: $message")
                     } else {
@@ -55,14 +56,74 @@ class RepositoryService(private val apolloClient: ApolloClient) : AnkoLogger {
                             repositories.add(repository)
                         }
 
-                        onFinishedListener.onResponse(repositories)
+                        responseListener.onResponse(repositories)
                     }
                 }
             })
     }
 
-    interface OnFinishedListener {
-        fun onResponse(repositoryList: ArrayList<Repository>)
+    fun getRepositoryDetails(
+        repositoryName: String,
+        repositoryOwnerName: String,
+        responseListener: ResponseListener<Subscriber>
+    ) {
+
+        val searchQuery = GetRepositoryDetailsQuery
+            .builder()
+            .name(repositoryName)
+            .owner(repositoryOwnerName)
+            .first(NUM_OF_ITEMS_IN_PAGE)
+            .build()
+
+        apolloClient.query(searchQuery)
+            .enqueue(object : ApolloCall.Callback<GetRepositoryDetailsQuery.Data>() {
+                override fun onFailure(e: ApolloException) {
+                    responseListener.onError()
+                    error(e)
+                }
+
+                override fun onResponse(response: com.apollographql.apollo.api.Response<GetRepositoryDetailsQuery.Data>) {
+
+                    val errors = response.errors()
+
+                    if (errors.isNotEmpty()) {
+                        responseListener.onError()
+                        val message = errors[0]?.message() ?: ""
+                        error("ERROR: $message")
+                    } else {
+                        val apolloRepositoryDetail = response.data()?.repository()
+                        val subscriberEdges = apolloRepositoryDetail?.watchers()?.edges()
+
+                        val subscribers = arrayListOf<Subscriber>()
+
+                        if (subscriberEdges != null) {
+                            for (edge in subscriberEdges) {
+                                val apolloSubscriber = edge.node()
+
+                                val subscriber = Subscriber(
+                                    apolloSubscriber!!.login(),
+                                    apolloSubscriber.avatarUrl().toString(),
+                                    apolloSubscriber.bio()
+                                )
+
+                                subscribers.add(subscriber)
+                            }
+                        }
+
+                        responseListener.onResponse(subscribers)
+                    }
+                }
+            })
+    }
+
+    interface ResponseListener<T> {
+        fun onResponse(responseItems: ArrayList<T>)
         fun onError()
     }
+
+    companion object {
+        private const val NUM_OF_ITEMS_IN_PAGE = 25
+    }
+
+
 }
