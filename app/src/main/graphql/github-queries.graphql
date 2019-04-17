@@ -1,5 +1,6 @@
 query GetRepositoriesByQualifiersAndKeywords($first: Int, $query: String!, $type: SearchType!) {
     search(first: $first, query: $query, type: $type) {
+        repositoryCount
         edges {
             node {
                 ... on Repository {
@@ -20,8 +21,9 @@ query GetRepositoriesByQualifiersAndKeywords($first: Int, $query: String!, $type
 }
 
 query GetRepositoryDetails($first:Int!, $owner:String!,$name:String!){
-    repository(owner:$owner, name:$name) {
+    repo(owner:$owner, name:$name) {
         watchers(first:$first) {
+            totalCount
             edges {
                 node {
                     ... on User {
