@@ -20,7 +20,7 @@ class RepoService(private val apolloClient: ApolloClient) {
 
         val searchQuery = GetRepositoriesByQualifiersAndKeywordsQuery
             .builder()
-            .query(searchParam + DEFAULT_SORT_PARAM)
+            .query("$searchParam $DEFAULT_SORT_PARAM")
             .first(NUM_OF_ITEMS_IN_PAGE)
             .type(SearchType.REPOSITORY)
             .build()
@@ -40,16 +40,17 @@ class RepoService(private val apolloClient: ApolloClient) {
                         repoServiceListener.onError()
                         for (error in response.errors()) logger.error("ERROR: ${error.message()}")
                     } else {
-                        val repositoryEdges = response.data()!!.search().edges()
-                        val repositoryCount = response.data()!!.search().repositoryCount()
+                        val repoResult = response.data()!!.search()
+                        val repoEdges = repoResult.edges()!!
+                        val repositoryCount = repoResult.repositoryCount()
 
                         val repositories = arrayListOf<Repo>()
 
-                        for (edge in repositoryEdges!!) {
-                            val apolloRepository = edge.node()!!.asRepository()
+                        for (edge in repoEdges) {
+                            val apolloRepository = edge.node()!!.asRepository()!!
 
                             val repository = Repo(
-                                apolloRepository!!.name(),
+                                apolloRepository.name(),
                                 apolloRepository.description(),
                                 apolloRepository.forkCount(),
                                 apolloRepository.owner().login(),
@@ -92,17 +93,16 @@ class RepoService(private val apolloClient: ApolloClient) {
                         repoServiceListener.onError()
                         for (error in response.errors()) logger.error("ERROR: ${error.message()}")
                     } else {
-                        val apolloRepositoryDetail = response.data()?.repository()
-                        val subscriberEdges = apolloRepositoryDetail?.watchers()?.edges()
-                        val subscriberCount = apolloRepositoryDetail?.watchers()?.totalCount()
+                        val apolloRepositoryDetail = response.data()!!.repository()!!
+                        val subscriberEdges = apolloRepositoryDetail.watchers().edges()!!
+                        val subscriberCount = apolloRepositoryDetail.watchers().totalCount()
 
                         val subscribers = arrayListOf<Subscriber>()
-
-                        for (edge in subscriberEdges!!) {
-                            val apolloSubscriber = edge.node()
+                        for (edge in subscriberEdges) {
+                            val apolloSubscriber = edge.node()!!
 
                             val subscriber = Subscriber(
-                                apolloSubscriber!!.login(),
+                                apolloSubscriber.login(),
                                 apolloSubscriber.avatarUrl().toString(),
                                 apolloSubscriber.bio()
                             )
@@ -110,7 +110,7 @@ class RepoService(private val apolloClient: ApolloClient) {
                             subscribers.add(subscriber)
                         }
 
-                        repoServiceListener.onResponse(RepoServiceResponse(subscriberCount!!, subscribers))
+                        repoServiceListener.onResponse(RepoServiceResponse(subscriberCount, subscribers))
                     }
                 }
             })
@@ -118,6 +118,6 @@ class RepoService(private val apolloClient: ApolloClient) {
 
     companion object {
         private const val NUM_OF_ITEMS_IN_PAGE = 25
-        private const val DEFAULT_SORT_PARAM = " sort:stars-desc"
+        private const val DEFAULT_SORT_PARAM = "sort:stars-desc"
     }
 }
