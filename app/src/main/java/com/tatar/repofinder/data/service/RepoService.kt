@@ -12,6 +12,8 @@ import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.error
 import type.SearchType
 
+
+// TODO methods are huge and kinda repeating, find a generic way and reduce amount of code in the methods
 class RepoService(private val apolloClient: ApolloClient) {
 
     private val logger = AnkoLogger(ApolloClient::class.java)
@@ -20,7 +22,7 @@ class RepoService(private val apolloClient: ApolloClient) {
 
         val searchQuery = GetRepositoriesByQualifiersAndKeywordsQuery
             .builder()
-            .query("$searchParam $DEFAULT_SORT_PARAM")
+            .query(searchParam)
             .first(NUM_OF_ITEMS_IN_PAGE)
             .type(SearchType.REPOSITORY)
             .build()
@@ -93,11 +95,12 @@ class RepoService(private val apolloClient: ApolloClient) {
                         repoServiceListener.onError()
                         for (error in response.errors()) logger.error("ERROR: ${error.message()}")
                     } else {
-                        val apolloRepositoryDetail = response.data()!!.repository()!!
-                        val subscriberEdges = apolloRepositoryDetail.watchers().edges()!!
-                        val subscriberCount = apolloRepositoryDetail.watchers().totalCount()
+                        val repoDetailResult = response.data()!!.repository()!!
+                        val subscriberEdges = repoDetailResult.watchers().edges()!!
+                        val subscriberCount = repoDetailResult.watchers().totalCount()
 
                         val subscribers = arrayListOf<Subscriber>()
+
                         for (edge in subscriberEdges) {
                             val apolloSubscriber = edge.node()!!
 
@@ -118,6 +121,5 @@ class RepoService(private val apolloClient: ApolloClient) {
 
     companion object {
         private const val NUM_OF_ITEMS_IN_PAGE = 25
-        private const val DEFAULT_SORT_PARAM = "sort:stars-desc"
     }
 }
