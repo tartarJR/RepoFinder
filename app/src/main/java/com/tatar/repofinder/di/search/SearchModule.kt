@@ -1,8 +1,9 @@
 package com.tatar.repofinder.di.search
 
+import com.squareup.picasso.Picasso
 import com.tatar.repofinder.data.service.RepoService
-import com.tatar.repofinder.ui.search.RepositoryAdapter
-import com.tatar.repofinder.ui.search.RepositoryAdapter.ItemClickListener
+import com.tatar.repofinder.ui.search.RepoAdapter
+import com.tatar.repofinder.ui.search.RepoAdapter.ItemClickListener
 import com.tatar.repofinder.ui.search.SearchContract.SearchPresenter
 import com.tatar.repofinder.ui.search.SearchPresenterImpl
 import com.tatar.repofinder.util.ConnectionManager
@@ -25,7 +26,7 @@ object SearchModule {
     @JvmStatic
     @PerSearch
     @Provides
-    fun repositoryAdapter(itemClickListener: ItemClickListener): RepositoryAdapter {
-        return RepositoryAdapter(itemClickListener)
+    fun repoAdapter(picasso: Picasso, itemClickListener: ItemClickListener): RepoAdapter {
+        return RepoAdapter(picasso, itemClickListener)
     }
 }

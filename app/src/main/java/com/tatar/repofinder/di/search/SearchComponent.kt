@@ -1,7 +1,7 @@
 package com.tatar.repofinder.di.search
 
 import com.tatar.repofinder.di.app.component.AppComponent
-import com.tatar.repofinder.ui.search.RepositoryAdapter.ItemClickListener
+import com.tatar.repofinder.ui.search.RepoAdapter.ItemClickListener
 import com.tatar.repofinder.ui.search.SearchActivity
 import dagger.BindsInstance
 import dagger.Component

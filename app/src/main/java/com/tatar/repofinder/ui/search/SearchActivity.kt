@@ -5,11 +5,11 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tatar.repofinder.App
 import com.tatar.repofinder.R
-import com.tatar.repofinder.data.model.Repository
+import com.tatar.repofinder.data.model.Repo
 import com.tatar.repofinder.di.search.DaggerSearchComponent
 import com.tatar.repofinder.ui.base.BaseActivity
 import com.tatar.repofinder.ui.detail.DetailActivity
-import com.tatar.repofinder.ui.search.RepositoryAdapter.ItemClickListener
+import com.tatar.repofinder.ui.search.RepoAdapter.ItemClickListener
 import com.tatar.repofinder.ui.search.SearchContract.SearchPresenter
 import com.tatar.repofinder.ui.search.SearchContract.SearchView
 import kotlinx.android.synthetic.main.activity_search.*
@@ -20,7 +20,7 @@ import javax.inject.Inject
 class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
 
     @Inject
-    lateinit var repositoryAdapter: RepositoryAdapter
+    lateinit var repoAdapter: RepoAdapter
     @Inject
     lateinit var searchPresenter: SearchPresenter
 
@@ -39,7 +39,7 @@ class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
 
     override fun initViews() {
         repository_recycler_view.layoutManager = LinearLayoutManager(this)
-        repository_recycler_view.adapter = repositoryAdapter
+        repository_recycler_view.adapter = repoAdapter
 
         repository_search_btn.setOnClickListener {
             val searchQuery = repository_search_view.query.toString()
@@ -55,9 +55,9 @@ class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
         searchPresenter.detach()
     }
 
-    override fun showResultContent(repositoryList: ArrayList<Repository>) {
+    override fun showResultContent(repoList: ArrayList<Repo>) {
         runOnUiThread {
-            repositoryAdapter.setRepositoryListItems(repositoryList)
+            repoAdapter.setRepositoryListItems(repoList)
             search_result_title_tv.visibility = View.VISIBLE
             repository_recycler_view.visibility = View.VISIBLE
         }
@@ -101,7 +101,7 @@ class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
         startActivity(intent)
     }
 
-    override fun onItemClick(repository: Repository) {
-        searchPresenter.onRepositoryItemClick(repository.name, repository.ownerName)
+    override fun onItemClick(repo: Repo) {
+        searchPresenter.onRepositoryItemClick(repo.name, repo.ownerName)
     }
 }
