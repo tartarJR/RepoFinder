@@ -7,10 +7,10 @@ class ConnectionManager(val context: Context) {
 
     fun hasInternetConnection(): Boolean {
 
-        var isConnected: Boolean = false
+        var isConnected = false
 
-        var connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        var activeNetworkInfo = connectivityManager.activeNetworkInfo
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetworkInfo = connectivityManager.activeNetworkInfo
 
         if (activeNetworkInfo != null && activeNetworkInfo.isConnected) {
             isConnected = true
