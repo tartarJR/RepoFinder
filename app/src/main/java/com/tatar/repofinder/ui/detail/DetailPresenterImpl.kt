@@ -13,7 +13,6 @@ import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.error
 import org.jetbrains.anko.info
 
-
 class DetailPresenterImpl(
     private val repoService: RepoService,
     private val connectionManager: ConnectionManager
