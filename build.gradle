@@ -5,20 +5,32 @@ buildscript {
     repositories {
         google()
         jcenter()
-        
+
     }
     dependencies {
+        /*
+        cannot upgrade it latest and also to Gradle 5.x due to lack of GraphQL support
+        see the issue https://github.com/awslabs/aws-mobile-appsync-sdk-android/issues/91
+        */
         classpath 'com.android.tools.build:gradle:3.3.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.apollographql.apollo:gradle-plugin:0.4.1'
     }
 }
 
+ext {
+    apollo_version = '0.4.1'
+    rxjava2_version = '2.2.8'
+    rxandroid_version = '2.1.1'
+    dagger2_version = '2.22.1'
+    powermock_version = '2.0.0'
+}
+
 allprojects {
     repositories {
         google()
         jcenter()
-        
+
     }
 }
 
