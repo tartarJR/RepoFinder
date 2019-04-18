@@ -52,7 +52,7 @@ class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
         search_view.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 searchPresenter.performSearch(query)
-                return true
+                return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
@@ -104,10 +104,6 @@ class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
 
     override fun displayErrorMessage() {
         runOnUiThread { setStatusText(getString(R.string.search_error_txt)) }
-    }
-
-    override fun displayEmptyQueryStringToast() {
-        displayToastMessage(getString(R.string.empty_search_query_message))
     }
 
     override fun startDetailActivity(repositoryName: String, repositoryOwnerName: String) {

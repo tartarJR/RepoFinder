@@ -6,7 +6,6 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.tatar.repofinder.R
 
@@ -74,10 +73,6 @@ abstract class BaseActivity : AppCompatActivity(), BaseContract.BaseView {
 
     protected fun setStatusText(message: String) {
         runOnUiThread { statusTextView?.text = message }
-    }
-
-    protected fun displayToastMessage(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     protected companion object {

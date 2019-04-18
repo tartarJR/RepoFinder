@@ -28,16 +28,12 @@ class SearchPresenterImpl(
                 searchView?.displayNoInternetWarning()
                 searchView?.showStatusTv()
             } else {
-                if (searchQuery.isEmpty()) {
-                    searchView?.displayEmptyQueryStringToast()
-                } else {
-                    searchView?.hideResultContent()
-                    searchView?.showProgressBar()
-                    searchView?.displaySearchingMessage()
-                    searchView?.showStatusTv()
+                searchView?.hideResultContent()
+                searchView?.showProgressBar()
+                searchView?.displaySearchingMessage()
+                searchView?.showStatusTv()
 
-                    repoService.getRepositoriesByQualifiersAndKeywords(searchQuery.trim(), this)
-                }
+                repoService.getRepositoriesByQualifiersAndKeywords(searchQuery.trim(), this)
             }
         } else {
             logger.error(DETACHED_VIEW_ERROR)

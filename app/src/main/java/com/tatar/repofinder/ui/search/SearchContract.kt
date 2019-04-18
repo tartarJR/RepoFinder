@@ -12,7 +12,6 @@ interface SearchContract {
         fun hideResultContent()
         fun displaySearchingMessage()
         fun displayNoRepositoriesFoundMessage()
-        fun displayEmptyQueryStringToast()
         fun startDetailActivity(repositoryName: String, repositoryOwnerName: String)
     }
 
