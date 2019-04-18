@@ -97,8 +97,6 @@ class SearchPresenterImpl(
 
             override fun onError(e: Throwable) {
 
-                logger.error(e)
-
                 if (searchView != null) {
                     searchView?.hideResultContent()
                     searchView?.hideProgressBar()
@@ -107,6 +105,8 @@ class SearchPresenterImpl(
                 } else {
                     logger.error(DETACHED_VIEW_ERROR)
                 }
+
+                logger.error(e)
             }
 
             override fun onComplete() {

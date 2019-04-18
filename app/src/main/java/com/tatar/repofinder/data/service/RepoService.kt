@@ -34,6 +34,7 @@ class RepoService(private val apolloClient: ApolloClient) {
         repositoryName: String,
         repositoryOwnerName: String
     ): Observable<RepoServiceResponse<Subscriber>> {
+
         val repoDetailQuery = GetRepositoryDetailsQuery
             .builder()
             .name(repositoryName)

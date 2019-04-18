@@ -98,8 +98,6 @@ class DetailPresenterImpl(
 
             override fun onError(e: Throwable) {
 
-                logger.error(e)
-
                 if (detailView != null) {
                     detailView?.hideDetailText()
                     detailView?.hideSubscriberList()
@@ -109,6 +107,8 @@ class DetailPresenterImpl(
                 } else {
                     logger.error(DETACHED_VIEW_ERROR)
                 }
+
+                logger.error(e)
             }
 
             override fun onComplete() {
