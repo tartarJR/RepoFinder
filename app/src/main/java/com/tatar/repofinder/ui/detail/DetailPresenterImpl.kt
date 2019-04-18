@@ -2,25 +2,28 @@ package com.tatar.repofinder.ui.detail
 
 import com.tatar.repofinder.data.model.Subscriber
 import com.tatar.repofinder.data.service.RepoService
-import com.tatar.repofinder.data.service.RepoServiceListener
 import com.tatar.repofinder.data.service.RepoServiceResponse
-import com.tatar.repofinder.ui.base.BaseContract
+import com.tatar.repofinder.data.service.RepoServiceUtil
+import com.tatar.repofinder.ui.base.BaseContract.BasePresenter.Companion.DETACHED_VIEW_ERROR
 import com.tatar.repofinder.ui.detail.DetailContract.DetailPresenter
 import com.tatar.repofinder.ui.detail.DetailContract.DetailView
 import com.tatar.repofinder.util.ConnectionManager
+import io.reactivex.observers.DisposableObserver
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.error
+import org.jetbrains.anko.info
+
 
 class DetailPresenterImpl(
     private val repoService: RepoService,
     private val connectionManager: ConnectionManager
-) : DetailPresenter, RepoServiceListener<Subscriber> {
+) : DetailPresenter {
 
     private val logger = AnkoLogger(DetailPresenterImpl::class.java)
 
-    private var detailView: DetailView? = null
-
     private var incomingRepoName = ""
+    private var detailView: DetailView? = null
+    private var repoDetailObserver: DisposableObserver<RepoServiceResponse<Subscriber>>? = null
 
     override fun getRepositoryDetails(repoName: String, repoOwnerName: String) {
 
@@ -35,10 +38,12 @@ class DetailPresenterImpl(
                 detailView?.disableSwipeRefresh()
                 detailView?.showProgressBar()
                 detailView?.displayRetrievingDetailsMessage()
-                repoService.getRepositoryDetails(repoName, repoOwnerName, this)
+
+                repoDetailObserver = getRepoDetailObserver()
+                repoService.getRepoDetails(repoName, repoOwnerName).subscribe(repoDetailObserver!!)
             }
         } else {
-            logger.error(BaseContract.BasePresenter.DETACHED_VIEW_ERROR)
+            logger.error(DETACHED_VIEW_ERROR)
         }
     }
 
@@ -50,39 +55,66 @@ class DetailPresenterImpl(
         this.detailView = null
     }
 
-    override fun onResponse(repoServiceResponse: RepoServiceResponse<Subscriber>) {
-        if (this.detailView != null) {
-            detailView?.hideProgressBar()
-
-            val numberOfSubscribers = repoServiceResponse.itemCount
-            val subscribers = repoServiceResponse.items
-
-            if (numberOfSubscribers < RepoService.NUM_OF_ITEMS_IN_PAGE) {
-                detailView?.displayDetailText(incomingRepoName, numberOfSubscribers, numberOfSubscribers)
-            } else {
-                detailView?.displayDetailText(incomingRepoName, RepoService.NUM_OF_ITEMS_IN_PAGE, numberOfSubscribers)
-            }
-
-            if (subscribers.isEmpty()) {
-                detailView?.displayNoSubscriberFoundMessage()
-            } else {
-                detailView?.hideStatusTv()
-                detailView?.displayRepositoryDetails(subscribers)
-            }
-        } else {
-            logger.error(BaseContract.BasePresenter.DETACHED_VIEW_ERROR)
+    override fun unSubscribeObservable() {
+        if (repoDetailObserver != null && !repoDetailObserver!!.isDisposed) {
+            repoDetailObserver!!.dispose()
         }
     }
 
-    override fun onError() {
-        if (this.detailView != null) {
-            detailView?.hideDetailText()
-            detailView?.hideSubscriberList()
-            detailView?.hideProgressBar()
-            detailView?.displayErrorMessage()
-            detailView?.showStatusTv()
-        } else {
-            logger.error(BaseContract.BasePresenter.DETACHED_VIEW_ERROR)
+    private fun getRepoDetailObserver(): DisposableObserver<RepoServiceResponse<Subscriber>> {
+
+        return object : DisposableObserver<RepoServiceResponse<Subscriber>>() {
+
+            override fun onNext(repoDetailResponse: RepoServiceResponse<Subscriber>) {
+                if (detailView != null) {
+                    detailView?.hideProgressBar()
+
+                    val numberOfSubscribers = repoDetailResponse.itemCount
+                    val subscribers = repoDetailResponse.items
+
+                    if (numberOfSubscribers < RepoServiceUtil.NUM_OF_ITEMS_IN_PAGE) {
+                        detailView?.displayDetailText(
+                            incomingRepoName,
+                            numberOfSubscribers,
+                            numberOfSubscribers
+                        )
+                    } else {
+                        detailView?.displayDetailText(
+                            incomingRepoName,
+                            RepoServiceUtil.NUM_OF_ITEMS_IN_PAGE,
+                            numberOfSubscribers
+                        )
+                    }
+
+                    if (subscribers.isEmpty()) {
+                        detailView?.displayNoSubscriberFoundMessage()
+                    } else {
+                        detailView?.hideStatusTv()
+                        detailView?.displayRepositoryDetails(subscribers)
+                    }
+                } else {
+                    logger.error(DETACHED_VIEW_ERROR)
+                }
+            }
+
+            override fun onError(e: Throwable) {
+
+                logger.error(e)
+
+                if (detailView != null) {
+                    detailView?.hideDetailText()
+                    detailView?.hideSubscriberList()
+                    detailView?.hideProgressBar()
+                    detailView?.displayErrorMessage()
+                    detailView?.showStatusTv()
+                } else {
+                    logger.error(DETACHED_VIEW_ERROR)
+                }
+            }
+
+            override fun onComplete() {
+                logger.info("getRepoDetails observation completed")
+            }
         }
     }
 }

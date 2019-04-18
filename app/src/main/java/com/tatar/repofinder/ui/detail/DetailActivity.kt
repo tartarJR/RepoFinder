@@ -12,7 +12,6 @@ import com.tatar.repofinder.ui.detail.DetailContract.DetailView
 import kotlinx.android.synthetic.main.activity_detail.*
 import javax.inject.Inject
 
-
 class DetailActivity : BaseActivity(), DetailView {
 
     @Inject
@@ -53,25 +52,21 @@ class DetailActivity : BaseActivity(), DetailView {
     }
 
     override fun displayRetrievingDetailsMessage() {
-        runOnUiThread { setStatusText(getString(R.string.retrieving_details_txt)) }
+        setStatusText(getString(R.string.retrieving_details_txt))
     }
 
     override fun displayDetailText(repoName: String, numberOfInitDisplays: Int, numberOfSubscriber: Int) {
-        runOnUiThread {
-            detail_tv.text = getString(R.string.detail_tv_txt, numberOfInitDisplays, numberOfSubscriber, repoName)
-            detail_tv.visibility = View.VISIBLE
-        }
+        detail_tv.text = getString(R.string.detail_tv_txt, numberOfInitDisplays, numberOfSubscriber, repoName)
+        detail_tv.visibility = View.VISIBLE
     }
 
     override fun displayRepositoryDetails(subscribers: ArrayList<Subscriber>) {
-        runOnUiThread {
-            subscriberAdapter.setSubscribers(subscribers)
-            subscriber_recycler_view.visibility = View.VISIBLE
-        }
+        subscriberAdapter.setSubscribers(subscribers)
+        subscriber_recycler_view.visibility = View.VISIBLE
     }
 
     override fun displayNoSubscriberFoundMessage() {
-        runOnUiThread { setStatusText(getString(R.string.no_subscribers_found_txt)) }
+        setStatusText(getString(R.string.no_subscribers_found_txt))
     }
 
     override fun hideSubscriberList() {
@@ -91,11 +86,11 @@ class DetailActivity : BaseActivity(), DetailView {
     }
 
     override fun displayErrorMessage() {
-        runOnUiThread { setStatusText(getString(R.string.detail_error_txt)) }
+        setStatusText(getString(R.string.detail_error_txt))
     }
 
     override fun displayNoInternetWarning() {
-        runOnUiThread { setStatusText(getString(R.string.detail_no_internet_msg)) }
+        setStatusText(getString(R.string.detail_no_internet_msg))
     }
 
     private fun makeDetailCall() {

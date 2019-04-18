@@ -2,124 +2,50 @@ package com.tatar.repofinder.data.service
 
 import GetRepositoriesByQualifiersAndKeywordsQuery
 import GetRepositoryDetailsQuery
-import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.api.Response
-import com.apollographql.apollo.exception.ApolloException
+import com.apollographql.apollo.rx2.Rx2Apollo
 import com.tatar.repofinder.data.model.Repo
 import com.tatar.repofinder.data.model.Subscriber
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.error
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import type.SearchType
 
-
-// TODO methods are huge and kinda repeating, find a generic way and reduce amount of code in the methods
 class RepoService(private val apolloClient: ApolloClient) {
 
-    private val logger = AnkoLogger(ApolloClient::class.java)
+    fun getSearchResults(searchParam: String): Observable<RepoServiceResponse<Repo>> {
 
-    fun getRepositoriesByQualifiersAndKeywords(searchParam: String, repoServiceListener: RepoServiceListener<Repo>) {
-
-        val searchQuery = GetRepositoriesByQualifiersAndKeywordsQuery
+        val repoSearchQuery = GetRepositoriesByQualifiersAndKeywordsQuery
             .builder()
             .query(searchParam)
-            .first(NUM_OF_ITEMS_IN_PAGE)
+            .first(RepoServiceUtil.NUM_OF_ITEMS_IN_PAGE)
             .type(SearchType.REPOSITORY)
             .build()
 
-        apolloClient.query(searchQuery)
-            .enqueue(object : ApolloCall.Callback<GetRepositoriesByQualifiersAndKeywordsQuery.Data>() {
-                override fun onFailure(e: ApolloException) {
-                    repoServiceListener.onError()
-                    logger.error(e)
-                }
+        val repoSearchCall = apolloClient.query(repoSearchQuery)
 
-                override fun onResponse(response: Response<GetRepositoriesByQualifiersAndKeywordsQuery.Data>) {
-
-                    val errors = response.errors()
-
-                    if (errors.isNotEmpty()) {
-                        repoServiceListener.onError()
-                        for (error in response.errors()) logger.error("ERROR: ${error.message()}")
-                    } else {
-                        val repoResult = response.data()!!.search()
-                        val repoEdges = repoResult.edges()!!
-                        val repositoryCount = repoResult.repositoryCount()
-
-                        val repositories = arrayListOf<Repo>()
-
-                        for (edge in repoEdges) {
-                            val apolloRepository = edge.node()!!.asRepository()!!
-
-                            val repository = Repo(
-                                apolloRepository.name(),
-                                apolloRepository.description(),
-                                apolloRepository.forkCount(),
-                                apolloRepository.owner().login(),
-                                apolloRepository.owner().avatarUrl().toString(),
-                                apolloRepository.primaryLanguage()?.name()
-                            )
-
-                            repositories.add(repository)
-                        }
-
-                        repoServiceListener.onResponse(RepoServiceResponse(repositoryCount, repositories))
-                    }
-                }
-            })
+        return Rx2Apollo.from(repoSearchCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map { RepoServiceUtil.convertFromApolloSearchResult(it.data()!!) }
     }
 
-    fun getRepositoryDetails(
+    fun getRepoDetails(
         repositoryName: String,
-        repositoryOwnerName: String,
-        repoServiceListener: RepoServiceListener<Subscriber>
-    ) {
-
-        val searchQuery = GetRepositoryDetailsQuery
+        repositoryOwnerName: String
+    ): Observable<RepoServiceResponse<Subscriber>> {
+        val repoDetailQuery = GetRepositoryDetailsQuery
             .builder()
             .name(repositoryName)
             .owner(repositoryOwnerName)
-            .first(NUM_OF_ITEMS_IN_PAGE)
+            .first(RepoServiceUtil.NUM_OF_ITEMS_IN_PAGE)
             .build()
 
-        apolloClient.query(searchQuery)
-            .enqueue(object : ApolloCall.Callback<GetRepositoryDetailsQuery.Data>() {
-                override fun onFailure(e: ApolloException) {
-                    repoServiceListener.onError()
-                    logger.error(e)
-                }
+        val repoDetailCall = apolloClient.query(repoDetailQuery)
 
-                override fun onResponse(response: Response<GetRepositoryDetailsQuery.Data>) {
-
-                    if (response.errors().isNotEmpty()) {
-                        repoServiceListener.onError()
-                        for (error in response.errors()) logger.error("ERROR: ${error.message()}")
-                    } else {
-                        val repoDetailResult = response.data()!!.repository()!!
-                        val subscriberEdges = repoDetailResult.watchers().edges()!!
-                        val subscriberCount = repoDetailResult.watchers().totalCount()
-
-                        val subscribers = arrayListOf<Subscriber>()
-
-                        for (edge in subscriberEdges) {
-                            val apolloSubscriber = edge.node()!!
-
-                            val subscriber = Subscriber(
-                                apolloSubscriber.login(),
-                                apolloSubscriber.avatarUrl().toString(),
-                                apolloSubscriber.bio()
-                            )
-
-                            subscribers.add(subscriber)
-                        }
-
-                        repoServiceListener.onResponse(RepoServiceResponse(subscriberCount, subscribers))
-                    }
-                }
-            })
-    }
-
-    companion object {
-        internal const val NUM_OF_ITEMS_IN_PAGE = 25
+        return Rx2Apollo.from(repoDetailCall)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map { RepoServiceUtil.convertFromApolloRepoDetail(it.data()!!) }
     }
 }

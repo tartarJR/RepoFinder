@@ -17,8 +17,6 @@ import com.tatar.repofinder.ui.search.SearchContract.SearchView
 import kotlinx.android.synthetic.main.activity_search.*
 import javax.inject.Inject
 
-
-// TODO need a better practice(RX, LiveData or co-routines) to avoid using runOnUiThread here
 class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
 
     @Inject
@@ -73,37 +71,31 @@ class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
     }
 
     override fun displayRepoList(repoList: ArrayList<Repo>) {
-        runOnUiThread {
-            repoAdapter.setRepos(repoList)
-            repository_recycler_view.visibility = View.VISIBLE
-        }
+        repoAdapter.setRepos(repoList)
+        repository_recycler_view.visibility = View.VISIBLE
     }
 
     override fun displayResultText(numberOfInitDisplays: Int, numberOfReposFound: Int) {
-        runOnUiThread {
-            search_result_title_tv.text =
-                getString(R.string.search_result_title_tv_txt, numberOfInitDisplays, numberOfReposFound)
-            search_result_title_tv.visibility = View.VISIBLE
-        }
+        search_result_title_tv.text =
+            getString(R.string.search_result_title_tv_txt, numberOfInitDisplays, numberOfReposFound)
+        search_result_title_tv.visibility = View.VISIBLE
     }
 
     override fun hideResultContent() {
-        runOnUiThread {
-            search_result_title_tv.visibility = View.GONE
-            repository_recycler_view.visibility = View.GONE
-        }
+        search_result_title_tv.visibility = View.GONE
+        repository_recycler_view.visibility = View.GONE
     }
 
     override fun displaySearchingMessage() {
-        runOnUiThread { status_tv.text = getString(R.string.searching_repos_txt) }
+        status_tv.text = getString(R.string.searching_repos_txt)
     }
 
     override fun displayNoRepositoriesFoundMessage() {
-        runOnUiThread { setStatusText(getString(R.string.no_repos_found_txt)) }
+        setStatusText(getString(R.string.no_repos_found_txt))
     }
 
     override fun displayErrorMessage() {
-        runOnUiThread { setStatusText(getString(R.string.search_error_txt)) }
+        setStatusText(getString(R.string.search_error_txt))
     }
 
     override fun startDetailActivity(repositoryName: String, repositoryOwnerName: String) {
