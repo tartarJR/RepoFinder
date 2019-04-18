@@ -21,6 +21,6 @@
     <string name="retrieving_details_txt">Retrieving details..</string>
     <string name="subscriber_avatar_iv_description">Subscriber avatar</string>
     <string name="no_subscribers_found_txt">No subscribers found</string>
-    <string name="detail_error_txt">Ups! Unable to retrieve subscribers now</string>
+    <string name="detail_error_txt">Ups! Unable to retrieve details now, please try again later</string>
     <string name="detail_no_internet_msg">Please make sure you have an internet connection and then swipe to refresh details</string>
 </resources>
