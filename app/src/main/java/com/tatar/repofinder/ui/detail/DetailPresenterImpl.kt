@@ -30,7 +30,11 @@ class DetailPresenterImpl(
             if (!connectionManager.hasInternetConnection()) {
                 detailView?.displayNoInternetWarning()
                 detailView?.hideProgressBar()
+                detailView?.enableSwipeRefresh()
             } else {
+                detailView?.disableSwipeRefresh()
+                detailView?.showProgressBar()
+                detailView?.displayRetrievingDetailsMessage()
                 repoService.getRepositoryDetails(repoName, repoOwnerName, this)
             }
         } else {
