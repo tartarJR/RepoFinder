@@ -37,7 +37,7 @@ object NetworkModule {
                 )
                 builder.addHeader(
                     "Authorization"
-                    , "Bearer" + BuildConfig.GITHUB_AUTH_TOKEN // TODO need a more secure way
+                    , "Bearer " + BuildConfig.GITHUB_AUTH_TOKEN // TODO need a more secure way
                 )
                 chain.proceed(builder.build())
             }
