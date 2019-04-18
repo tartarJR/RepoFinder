@@ -85,11 +85,11 @@ class SearchPresenterImpl(
         }
     }
 
-    override fun attach(view: SearchView?) {
+    override fun attachView(view: SearchView?) {
         this.searchView = view
     }
 
-    override fun detach() {
+    override fun detachView() {
         this.searchView = null
     }
 }

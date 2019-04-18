@@ -44,12 +44,12 @@ class DetailActivity : BaseActivity(), DetailView {
     }
 
     override fun init() {
-        detailPresenter.attach(this)
+        detailPresenter.attachView(this)
         makeDetailCall()
     }
 
     override fun detachPresenter() {
-        detailPresenter.detach()
+        detailPresenter.detachView()
     }
 
     override fun displayRetrievingDetailsMessage() {

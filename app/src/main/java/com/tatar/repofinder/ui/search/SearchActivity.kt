@@ -65,11 +65,11 @@ class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
     }
 
     override fun init() {
-        searchPresenter.attach(this)
+        searchPresenter.attachView(this)
     }
 
     override fun detachPresenter() {
-        searchPresenter.detach()
+        searchPresenter.detachView()
     }
 
     override fun displayRepoList(repoList: ArrayList<Repo>) {

@@ -42,11 +42,11 @@ class DetailPresenterImpl(
         }
     }
 
-    override fun attach(view: DetailView?) {
+    override fun attachView(view: DetailView?) {
         this.detailView = view
     }
 
-    override fun detach() {
+    override fun detachView() {
         this.detailView = null
     }
 

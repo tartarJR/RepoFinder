@@ -4,8 +4,8 @@ interface BaseContract {
 
     interface BasePresenter<in T> {
 
-        fun attach(view: T)
-        fun detach()
+        fun attachView(view: T)
+        fun detachView()
 
         companion object {
             const val DETACHED_VIEW_ERROR = "View is detached"
