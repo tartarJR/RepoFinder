@@ -6,7 +6,8 @@
     <string name="status_tv_error_txt">Ups! Something went wrong.</string>
 
     <!--SearchActivity-->
-    <string name="search_btn_txt">SEARCH</string>
+    <string name="action_search_title">Search…</string>
+    <string name="search_view_hint">Type a keyword or qualifier</string>
     <string name="search_result_title_tv_txt">Displaying  %1$d of %2$d search results</string>
     <string name="repo_owner_avatar_iv_description">Avatar of the repository owner</string>
     <string name="github_fork_icon_iv_description">Github fork icon</string>
@@ -14,7 +15,6 @@
     <string name="searching_repos_txt">Searching for Github repositories..</string>
     <string name="search_error_txt">Ups! Something went wrong. Make sure you provide a valid search query or try again later</string>
     <string name="no_repos_found_txt">No repositories found</string>
-    <string name="empty_search_query_message">Please provide a search text</string>
 
     <!--DetailActivity-->
     <string name="detail_tv_txt">Displaying %1$d of %2$d subscribers that %3$s repository has</string>
