@@ -66,8 +66,9 @@ class SearchActivity : BaseActivity(), SearchView, ItemClickListener {
         searchPresenter.attachView(this)
     }
 
-    override fun detachPresenter() {
+    override fun releasePresenterResources() {
         searchPresenter.detachView()
+        searchPresenter.unSubscribeObservable()
     }
 
     override fun displayRepoList(repoList: ArrayList<Repo>) {

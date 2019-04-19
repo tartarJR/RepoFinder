@@ -47,8 +47,9 @@ class DetailActivity : BaseActivity(), DetailView {
         makeDetailCall()
     }
 
-    override fun detachPresenter() {
+    override fun releasePresenterResources() {
         detailPresenter.detachView()
+        detailPresenter.unSubscribeObservable()
     }
 
     override fun displayRetrievingDetailsMessage() {

@@ -29,14 +29,14 @@ abstract class BaseActivity : AppCompatActivity(), BaseContract.BaseView {
 
     override fun onDestroy() {
         super.onDestroy()
-        detachPresenter()
+        releasePresenterResources()
     }
 
     protected abstract fun getLayoutId(): Int
     protected abstract fun provideDependencies()
     protected abstract fun initViews()
     protected abstract fun init()
-    protected abstract fun detachPresenter()
+    protected abstract fun releasePresenterResources()
 
     override fun showProgressBar() {
         progressBar?.visibility = View.VISIBLE
