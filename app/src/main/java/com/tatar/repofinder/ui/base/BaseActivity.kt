@@ -39,19 +39,19 @@ abstract class BaseActivity : AppCompatActivity(), BaseContract.BaseView {
     protected abstract fun detachPresenter()
 
     override fun showProgressBar() {
-        runOnUiThread { progressBar?.visibility = View.VISIBLE }
+        progressBar?.visibility = View.VISIBLE
     }
 
     override fun hideProgressBar() {
-        runOnUiThread { progressBar?.visibility = View.GONE }
+        progressBar?.visibility = View.GONE
     }
 
     override fun showStatusTv() {
-        runOnUiThread { statusTextView?.visibility = View.VISIBLE }
+        statusTextView?.visibility = View.VISIBLE
     }
 
     override fun hideStatusTv() {
-        runOnUiThread { statusTextView?.visibility = View.GONE }
+        statusTextView?.visibility = View.GONE
     }
 
     override fun displayNoInternetWarning() {
@@ -59,20 +59,18 @@ abstract class BaseActivity : AppCompatActivity(), BaseContract.BaseView {
     }
 
     override fun hideKeyboard() {
-        runOnUiThread {
-            val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-            var view = currentFocus
+        val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        var view = currentFocus
 
-            if (view == null) {
-                view = View(this)
-            }
-
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        if (view == null) {
+            view = View(this)
         }
+
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     protected fun setStatusText(message: String) {
-        runOnUiThread { statusTextView?.text = message }
+        statusTextView?.text = message
     }
 
     protected companion object {
