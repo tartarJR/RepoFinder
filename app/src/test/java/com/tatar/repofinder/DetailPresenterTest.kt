@@ -37,13 +37,13 @@ class DetailPresenterTest {
     var testSchedulerRule = RxImmediateSchedulerRule()
 
     @Mock
-    lateinit var mockDetailView: DetailView
+    private lateinit var mockDetailView: DetailView
 
     @Mock
-    lateinit var mockRepoService: RepoService
+    private lateinit var mockRepoService: RepoService
 
     @Mock
-    lateinit var mockConnectionManger: ConnectionManager
+    private lateinit var mockConnectionManger: ConnectionManager
 
     private lateinit var detailPresenter: DetailPresenter
 
