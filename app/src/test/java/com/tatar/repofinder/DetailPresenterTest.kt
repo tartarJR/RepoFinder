@@ -45,7 +45,7 @@ class DetailPresenterTest {
     @Mock
     lateinit var mockConnectionManger: ConnectionManager
 
-    lateinit var detailPresenter: DetailPresenter
+    private lateinit var detailPresenter: DetailPresenter
 
     @Before
     fun setUp() {
